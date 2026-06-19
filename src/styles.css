@@ -1,3 +1,99 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@theme {
+  --color-brand-green: #abc270;
+  --color-brand-yellow: #fec868;
+  --color-brand-orange: #fda769;
+  --color-brand-brown: #473c33;
+
+  --color-surface: #faf9f6;
+  --color-card: #ffffff;
+  --color-muted: #7a7067;
+
+  --color-status-applied: #abc270;
+  --color-status-pending: #fec868;
+  --color-status-overdue: #fda769;
+  --color-status-scheduled: #473c33;
+
+  --font-sans:
+    'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --shadow-soft: 0 2px 8px rgba(71, 60, 51, 0.08);
+  --shadow-card: 0 4px 16px rgba(71, 60, 51, 0.1);
+  --shadow-pop: 0 -8px 28px rgba(71, 60, 51, 0.12);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-brand-brown);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes vk-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes vk-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.vk-sheet {
+  animation: vk-slide-up 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.vk-overlay {
+  animation: vk-fade-in 0.2s ease-out;
+}
+
+@keyframes vk-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.vk-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(71, 60, 51, 0.08);
+}
+.vk-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: vk-shimmer 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vk-sheet,
+  .vk-overlay,
+  .vk-skeleton::after {
+    animation: none;
+  }
+}
