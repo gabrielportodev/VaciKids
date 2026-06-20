@@ -1,0 +1,87 @@
+<section class="space-y-5">
+  <header>
+    <h1 class="text-2xl font-extrabold text-brand-brown">Campanhas de vacinação</h1>
+    <p class="text-muted">Mutirões e ações de vacinação na sua região.</p>
+  </header>
+
+  <div class="flex gap-1 rounded-lg bg-brand-brown/5 p-1">
+    <button
+      type="button"
+      (click)="setTab('active')"
+      class="h-10 flex-1 rounded-md text-sm font-bold transition"
+      [class]="tab() === 'active' ? 'bg-card text-brand-brown shadow-soft' : 'text-muted'"
+    >
+      Ativas ({{ counts().active }})
+    </button>
+    <button
+      type="button"
+      (click)="setTab('ended')"
+      class="h-10 flex-1 rounded-md text-sm font-bold transition"
+      [class]="tab() === 'ended' ? 'bg-card text-brand-brown shadow-soft' : 'text-muted'"
+    >
+      Encerradas ({{ counts().ended }})
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-2 sm:flex-row">
+    <label
+      class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="users" [size]="18" class="text-muted" />
+      <span class="sr-only">Filtrar por idade da criança</span>
+      <select
+        [value]="ageFilter()"
+        (change)="onAgeFilter($event)"
+        class="h-11 flex-1 bg-transparent text-sm font-medium text-brand-brown outline-none"
+      >
+        @for (filter of ageFilters; track filter.value) {
+          <option [value]="filter.value">{{ filter.label }}</option>
+        }
+      </select>
+    </label>
+    <label
+      class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="calendar" [size]="18" class="text-muted" />
+      <span class="sr-only">Filtrar por data da campanha</span>
+      <input
+        type="date"
+        [value]="dateFilter()"
+        (change)="onDateFilter($event)"
+        class="h-11 flex-1 bg-transparent text-sm font-medium text-brand-brown outline-none"
+      />
+    </label>
+  </div>
+
+  @if (shown().length > 0) {
+    <div class="grid gap-3 lg:grid-cols-2">
+      @for (campaign of shown(); track campaign.id) {
+        <app-campaign-card
+          [campaign]="campaign"
+          [active]="isActive(campaign.id)"
+          [ended]="tab() === 'ended'"
+        />
+      }
+    </div>
+  } @else if (hasFilters()) {
+    <app-empty-state
+      icon="search"
+      title="Nenhuma campanha encontrada"
+      description="Nenhuma campanha corresponde aos filtros selecionados."
+    >
+      <button
+        type="button"
+        (click)="clearFilters()"
+        class="mt-1 rounded-lg bg-brand-green px-5 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95"
+      >
+        Limpar filtros
+      </button>
+    </app-empty-state>
+  } @else {
+    <app-empty-state
+      icon="megaphone"
+      [title]="tab() === 'ended' ? 'Nenhuma campanha encerrada' : 'Nenhuma campanha ativa'"
+      description="Novas campanhas aparecerão aqui quando disponíveis."
+    />
+  }
+</section>

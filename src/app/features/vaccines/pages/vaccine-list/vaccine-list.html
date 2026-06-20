@@ -1,0 +1,76 @@
+<section class="space-y-5">
+  <header>
+    <h1 class="text-2xl font-extrabold text-brand-brown">Vacinas</h1>
+    <p class="text-muted">Calendário nacional de vacinação infantil.</p>
+  </header>
+
+  <label
+    class="flex items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+  >
+    <app-icon name="search" [size]="18" class="text-muted" />
+    <input
+      type="search"
+      [value]="search()"
+      (input)="onSearch($event)"
+      placeholder="Buscar vacina..."
+      class="h-11 flex-1 bg-transparent text-sm text-brand-brown outline-none placeholder:text-muted"
+    />
+  </label>
+
+  <div class="flex flex-col gap-2 sm:flex-row">
+    <label
+      class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="syringe" [size]="18" class="text-muted" />
+      <span class="sr-only">Filtrar por número de doses</span>
+      <select
+        [value]="doseFilter()"
+        (change)="onDoseFilter($event)"
+        class="h-11 flex-1 bg-transparent text-sm font-medium text-brand-brown outline-none"
+      >
+        <option value="all">Todas as doses</option>
+        @for (dose of doseOptions(); track dose) {
+          <option [value]="dose">{{ dose }} {{ dose === 1 ? 'dose' : 'doses' }}</option>
+        }
+      </select>
+    </label>
+    <label
+      class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="filter" [size]="18" class="text-muted" />
+      <span class="sr-only">Filtrar por tempo ideal de vacinação</span>
+      <select
+        [value]="ageFilter()"
+        (change)="onAgeFilter($event)"
+        class="h-11 flex-1 bg-transparent text-sm font-medium text-brand-brown outline-none"
+      >
+        @for (filter of ageRangeFilters; track filter.value) {
+          <option [value]="filter.value">{{ filter.label }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  @if (groups().length > 0) {
+    <div class="space-y-6">
+      @for (group of groups(); track group.ageMonths) {
+        <div class="space-y-2">
+          <h2 class="text-sm font-extrabold tracking-wide text-muted uppercase">
+            {{ group.label }}
+          </h2>
+          <div class="grid gap-3 lg:grid-cols-2">
+            @for (vaccine of group.vaccines; track vaccine.id) {
+              <app-vaccine-card [vaccine]="vaccine" />
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      icon="search"
+      title="Nenhuma vacina encontrada"
+      [description]="'Nenhum resultado para “' + search() + '”.'"
+    />
+  }
+</section>

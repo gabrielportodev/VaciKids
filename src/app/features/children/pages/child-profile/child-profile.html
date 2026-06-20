@@ -1,0 +1,67 @@
+@if (child(); as child) {
+  <app-detail-header [title]="child.name" backLink="/children">
+    <a
+      [routerLink]="['/children', child.id, 'edit']"
+      aria-label="Editar"
+      class="flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-white/10"
+    >
+      <app-icon name="pencil" [size]="20" />
+    </a>
+  </app-detail-header>
+
+  <section class="space-y-6">
+    <ion-card class="rounded-xl bg-card shadow-soft">
+      <ion-card-content class="flex flex-col items-center gap-3 p-6 text-center">
+        @if (child.photoUrl) {
+          <ion-avatar class="h-20 w-20">
+            <img [src]="child.photoUrl" [alt]="child.name" />
+          </ion-avatar>
+        } @else {
+          <span
+            class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-green/25 text-2xl font-extrabold text-brand-brown"
+          >
+            {{ initials() }}
+          </span>
+        }
+        <div>
+          <h2 class="text-xl font-extrabold text-brand-brown">{{ child.name }}</h2>
+          <p class="text-muted">{{ child.birthDate | age }}</p>
+        </div>
+
+        <div class="grid w-full grid-cols-3 gap-2">
+          <div class="rounded-xl bg-brand-green/15 px-2 py-3">
+            <app-icon name="check-circle" [size]="20" class="mx-auto text-brand-green" />
+            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().applied }}</p>
+            <p class="text-xs text-muted">Aplicadas</p>
+          </div>
+          <div class="rounded-xl bg-brand-yellow/25 px-2 py-3">
+            <app-icon name="calendar-clock" [size]="20" class="mx-auto text-brand-yellow" />
+            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().pending }}</p>
+            <p class="text-xs text-muted">Pendentes</p>
+          </div>
+          <div class="rounded-xl bg-brand-orange/20 px-2 py-3">
+            <app-icon name="alert-triangle" [size]="20" class="mx-auto text-brand-orange" />
+            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().overdue }}</p>
+            <p class="text-xs text-muted">Atrasadas</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="space-y-3">
+      <h2 class="font-bold text-brand-brown">Calendário vacinal</h2>
+      <app-vaccine-timeline [records]="records()" (register)="openRegister($event)" />
+    </div>
+  </section>
+
+  @if (selectedRecord(); as record) {
+    <app-register-vaccine-sheet
+      [record]="record"
+      [vaccineName]="vaccineName(record.vaccineId)"
+      (confirmed)="confirmRegister($event)"
+      (cancelled)="closeSheet()"
+    />
+  }
+} @else {
+  <p class="py-12 text-center text-muted">Criança não encontrada.</p>
+}

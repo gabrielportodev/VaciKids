@@ -1,0 +1,86 @@
+@if (campaign(); as campaign) {
+  <div
+    class="-mx-4 mb-6 bg-linear-to-br from-brand-yellow to-brand-orange px-4 pt-4 pb-6 md:-mx-8 md:rounded-xl md:px-6"
+  >
+    <a
+      routerLink="/campaigns"
+      aria-label="Voltar"
+      class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/30 text-brand-brown transition hover:bg-white/50"
+    >
+      <app-icon name="arrow-left" [size]="22" />
+    </a>
+    <span
+      class="inline-flex items-center gap-1.5 rounded-full bg-white/40 px-3 py-1 text-xs font-bold text-brand-brown"
+    >
+      <app-icon name="megaphone" [size]="14" />
+      Campanha de vacinação
+    </span>
+    <h1 class="mt-3 text-2xl font-extrabold text-brand-brown">{{ campaign.title }}</h1>
+  </div>
+
+  <section class="space-y-6">
+    <div class="grid gap-3 sm:grid-cols-3">
+      <ion-card class="rounded-xl bg-card shadow-soft">
+        <ion-card-content class="p-4">
+          <app-icon name="calendar" [size]="20" class="text-brand-orange" />
+          <p class="mt-2 text-sm font-extrabold text-brand-brown">
+            {{ campaign.startDate | dateFormat }}
+          </p>
+          <p class="text-sm font-extrabold text-brand-brown">
+            até {{ campaign.endDate | dateFormat }}
+          </p>
+          <p class="mt-1 text-xs text-muted">Período</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-card class="rounded-xl bg-card shadow-soft">
+        <ion-card-content class="p-4">
+          <app-icon name="users" [size]="20" class="text-brand-green" />
+          <p class="mt-2 text-sm font-extrabold text-brand-brown">{{ audience() }}</p>
+          <p class="mt-1 text-xs text-muted">Público-alvo</p>
+        </ion-card-content>
+      </ion-card>
+      @if (vaccineName()) {
+        <ion-card
+          [routerLink]="['/vaccines', campaign.relatedVaccineId]"
+          button
+          class="rounded-xl bg-card shadow-soft transition hover:shadow-card"
+        >
+          <ion-card-content class="p-4">
+            <app-icon name="syringe" [size]="20" class="text-brand-yellow" />
+            <p class="mt-2 text-sm font-extrabold text-brand-brown">{{ vaccineName() }}</p>
+            <p class="mt-1 text-xs text-muted">Vacina</p>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+
+    <div class="space-y-2">
+      <h2 class="font-bold text-brand-brown">Sobre a campanha</h2>
+      <p class="leading-relaxed text-brand-brown/80">{{ campaign.description }}</p>
+    </div>
+
+    @if (eligible().length > 0) {
+      <div class="space-y-3 rounded-xl border border-brand-green/30 bg-brand-green/10 p-4">
+        <h2 class="flex items-center gap-2 font-bold text-brand-brown">
+          <app-icon name="users" [size]="18" class="text-brand-green" />
+          Seus filhos elegíveis
+        </h2>
+        @for (entry of eligible(); track entry.child.id) {
+          <ion-item [routerLink]="['/children', entry.child.id]" button detail="false" lines="none">
+            <div
+              class="vk-row flex items-center gap-3 rounded-lg bg-card p-3 shadow-soft transition hover:shadow-card"
+            >
+              <div class="min-w-0 flex-1">
+                <strong class="block truncate text-brand-brown">{{ entry.child.name }}</strong>
+                <p class="truncate text-xs text-muted">{{ entry.child.birthDate | age }}</p>
+              </div>
+              <app-status-badge [status]="entry.status" />
+            </div>
+          </ion-item>
+        }
+      </div>
+    }
+  </section>
+} @else {
+  <p class="py-12 text-center text-muted">Campanha não encontrada.</p>
+}

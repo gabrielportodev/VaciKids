@@ -1,0 +1,77 @@
+<section class="space-y-5">
+  <header class="flex items-center justify-between gap-3">
+    <h1 class="text-2xl font-extrabold text-brand-brown">Minhas crianças</h1>
+    <a
+      routerLink="/children/new"
+      class="hidden items-center gap-1.5 rounded-lg bg-brand-green px-4 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95 sm:inline-flex"
+    >
+      <app-icon name="plus" [size]="18" [strokeWidth]="2.5" />
+      Adicionar criança
+    </a>
+  </header>
+
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+    <label
+      class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="search" [size]="18" class="text-muted" />
+      <input
+        type="search"
+        [value]="search()"
+        (input)="onSearch($event)"
+        placeholder="Buscar criança..."
+        class="h-11 flex-1 bg-transparent text-sm text-brand-brown outline-none placeholder:text-muted"
+      />
+    </label>
+    <label
+      class="flex items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
+    >
+      <app-icon name="filter" [size]="18" class="text-muted" />
+      <span class="sr-only">Filtrar por idade</span>
+      <select
+        [value]="ageFilter()"
+        (change)="onAgeFilter($event)"
+        class="h-11 bg-transparent text-sm font-medium text-brand-brown outline-none"
+      >
+        @for (filter of ageFilters; track filter.value) {
+          <option [value]="filter.value">{{ filter.label }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  @if (childCards().length > 0) {
+    <div class="grid gap-3 sm:grid-cols-2">
+      @for (entry of childCards(); track entry.child.id) {
+        <app-child-card [child]="entry.child" [summary]="entry.summary" />
+      }
+    </div>
+  } @else if (search() || hasFilters()) {
+    <app-empty-state
+      icon="search"
+      title="Nenhuma criança encontrada"
+      description="Tente ajustar a busca ou o filtro de idade."
+    />
+  } @else {
+    <app-empty-state
+      icon="baby"
+      title="Nenhuma criança cadastrada"
+      description="Adicione seu primeiro filho para começar."
+    >
+      <a
+        routerLink="/children/new"
+        class="mt-1 rounded-lg bg-brand-green px-5 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95"
+      >
+        Adicionar criança
+      </a>
+    </app-empty-state>
+  }
+</section>
+
+<a
+  routerLink="/children/new"
+  aria-label="Adicionar criança"
+  class="fixed right-5 bottom-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-brand-green text-brand-brown shadow-card transition hover:brightness-95 active:scale-95 sm:hidden"
+>
+  <app-icon name="plus" [size]="26" [strokeWidth]="2.5" />
+</a>

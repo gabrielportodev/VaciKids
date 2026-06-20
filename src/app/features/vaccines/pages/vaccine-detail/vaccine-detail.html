@@ -1,0 +1,59 @@
+@if (vaccine(); as vaccine) {
+  <app-detail-header [title]="vaccine.name" backLink="/vaccines" />
+
+  <section class="space-y-6">
+    <header class="flex items-center gap-3">
+      <span
+        class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-green/15 text-brand-green"
+      >
+        <app-icon name="syringe" [size]="28" />
+      </span>
+      <div>
+        <h2 class="text-xl font-extrabold text-brand-brown">{{ vaccine.name }}</h2>
+        <p class="text-sm text-muted">Vacina do calendário nacional (SUS)</p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <ion-card class="rounded-xl bg-card shadow-soft">
+        <ion-card-content class="p-4">
+          <app-icon name="syringe" [size]="20" class="text-brand-green" />
+          <p class="mt-2 text-lg font-extrabold text-brand-brown">{{ vaccine.totalDoses }}</p>
+          <p class="text-xs text-muted">Doses necessárias</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-card class="rounded-xl bg-card shadow-soft">
+        <ion-card-content class="p-4">
+          <app-icon name="calendar" [size]="20" class="text-brand-yellow" />
+          <p class="mt-2 text-lg font-extrabold text-brand-brown">{{ ageLabel() }}</p>
+          <p class="text-xs text-muted">Idade recomendada</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-card class="rounded-xl bg-card shadow-soft">
+        <ion-card-content class="p-4">
+          <app-icon name="info" [size]="20" class="text-brand-orange" />
+          <p class="mt-2 text-lg font-extrabold text-brand-brown">{{ route() }}</p>
+          <p class="text-xs text-muted">Via de administração</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="space-y-2">
+      <h3 class="font-bold text-brand-brown">Sobre a vacina</h3>
+      <p class="leading-relaxed text-brand-brown/80">{{ vaccine.description }}</p>
+    </div>
+
+    <div class="space-y-2 rounded-xl border-l-4 border-brand-orange bg-brand-orange/10 p-4">
+      <h3 class="flex items-center gap-2 font-bold text-brand-brown">
+        <app-icon name="alert-triangle" [size]="18" class="text-brand-orange" />
+        Contraindicações
+      </h3>
+      <p class="text-sm leading-relaxed text-brand-brown/80">
+        Não deve ser aplicada em caso de febre alta ou reação alérgica grave a doses anteriores.
+        Consulte sempre um profissional de saúde antes da aplicação.
+      </p>
+    </div>
+  </section>
+} @else {
+  <p class="py-12 text-center text-muted">Vacina não encontrada.</p>
+}

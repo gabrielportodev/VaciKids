@@ -1,0 +1,47 @@
+<section class="space-y-5">
+  <header>
+    <h1 class="text-2xl font-extrabold text-brand-brown">Histórico vacinal</h1>
+    <p class="text-muted">Todas as vacinas já aplicadas nos seus filhos.</p>
+  </header>
+
+  @if (groups().length > 0) {
+    <div class="space-y-6">
+      @for (group of groups(); track group.childId) {
+        <div class="space-y-2">
+          <h2 class="text-sm font-extrabold tracking-wide text-muted uppercase">
+            {{ group.childName }}
+          </h2>
+          @for (record of group.records; track record.id) {
+            <ion-item lines="none">
+              <div class="vk-row flex items-center gap-3 rounded-xl bg-card p-4 shadow-soft">
+                <span
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green"
+                >
+                  <app-icon name="check-circle" [size]="20" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <strong class="block truncate text-brand-brown">
+                    {{ vaccineName(record.vaccineId) }}
+                    <span class="font-normal text-muted">· {{ record.dose }}ª dose</span>
+                  </strong>
+                  <p class="truncate text-xs text-muted">
+                    Aplicada em {{ record.applicationDate | dateFormat }}
+                    @if (record.healthUnit) {
+                      · {{ record.healthUnit }}
+                    }
+                  </p>
+                </div>
+              </div>
+            </ion-item>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      icon="history"
+      title="Nenhuma vacina aplicada"
+      description="Os registros de vacinas aplicadas aparecerão aqui."
+    />
+  }
+</section>
