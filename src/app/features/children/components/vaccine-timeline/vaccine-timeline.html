@@ -1,0 +1,98 @@
+<div class="space-y-4">
+  <div class="flex flex-wrap gap-2">
+    @for (tab of filters(); track tab.key) {
+      <button
+        type="button"
+        (click)="setFilter(tab.key)"
+        class="rounded-full px-4 py-1.5 text-sm font-bold transition"
+        [class]="
+          filter() === tab.key
+            ? 'bg-brand-green text-brand-brown'
+            : 'bg-card text-muted shadow-soft hover:text-brand-brown'
+        "
+      >
+        {{ tab.label }} ({{ tab.count }})
+      </button>
+    }
+  </div>
+
+  @if (groups().length > 0) {
+    <div class="space-y-6">
+      @for (group of groups(); track group.ageMonths) {
+        <div class="space-y-2">
+          <h3 class="text-sm font-extrabold tracking-wide text-muted uppercase">
+            {{ group.label }}
+          </h3>
+
+          @for (record of group.records; track record.id) {
+            @let applied = record.status === 'applied';
+
+            @if (applied) {
+              <ion-item
+                [routerLink]="['/vaccines', record.vaccineId]"
+                button
+                detail="false"
+                lines="none"
+              >
+                <div
+                  class="vk-row flex items-center gap-3 rounded-xl border-l-4 bg-card p-4 shadow-soft transition hover:shadow-card"
+                  [class]="borderClass(record.status)"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="cardBody; context: { record: record }"
+                  ></ng-container>
+                </div>
+              </ion-item>
+            } @else {
+              <ion-item button detail="false" lines="none" (click)="register.emit(record)">
+                <div
+                  class="vk-row flex items-center gap-3 rounded-xl border-l-4 bg-card p-4 text-left shadow-soft transition hover:shadow-card"
+                  [class]="borderClass(record.status)"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="cardBody; context: { record: record }"
+                  ></ng-container>
+                </div>
+              </ion-item>
+            }
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      icon="syringe"
+      title="Nenhuma vacina aqui"
+      description="Não há vacinas para o filtro selecionado."
+    />
+  }
+</div>
+
+<ng-template #cardBody let-record="record">
+  <span
+    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-brown/5"
+    [class]="iconColor(record.status)"
+  >
+    <app-icon [name]="icon(record.status)" [size]="20" />
+  </span>
+
+  <div class="min-w-0 flex-1">
+    <div class="flex items-center justify-between gap-2">
+      <strong class="truncate text-brand-brown">{{ vaccineName(record.vaccineId) }}</strong>
+      <app-status-badge [status]="record.status" />
+    </div>
+    <p class="mt-0.5 text-xs text-muted">
+      {{ record.dose }}ª dose ·
+      @if (record.applicationDate) {
+        aplicada em {{ record.applicationDate | dateFormat }}
+      } @else {
+        prevista para {{ record.scheduledDate | dateFormat }}
+      }
+    </p>
+    @if (record.status === 'overdue') {
+      <p class="mt-1 text-xs font-bold text-brand-orange">
+        {{ daysLate(record.scheduledDate) }} dias em atraso
+      </p>
+    }
+  </div>
+</ng-template>

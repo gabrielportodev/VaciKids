@@ -1,0 +1,42 @@
+<ion-item [routerLink]="['/campaigns', campaign().id]" button detail="false" lines="none">
+  <div
+    class="vk-row group flex items-center gap-3 overflow-hidden rounded-xl p-4 shadow-soft transition hover:shadow-card"
+    [class]="ended() ? 'bg-brand-brown/5' : 'bg-linear-to-r from-brand-yellow to-brand-orange'"
+  >
+    <span
+      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+      [class]="ended() ? 'bg-brand-brown/10 text-brand-brown/50' : 'bg-white/30 text-brand-brown'"
+    >
+      <app-icon name="megaphone" [size]="22" />
+    </span>
+
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-2">
+        <strong class="truncate text-brand-brown">{{ campaign().title }}</strong>
+        @if (active()) {
+          <span
+            class="shrink-0 rounded-full bg-white/40 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-brand-brown uppercase"
+          >
+            Ativa
+          </span>
+        }
+      </div>
+      <p
+        class="truncate text-sm font-semibold"
+        [class]="ended() ? 'text-muted' : 'text-brand-brown/80'"
+      >
+        {{ audience() }}
+      </p>
+      <p class="text-xs" [class]="ended() ? 'text-muted' : 'text-brand-brown/70'">
+        {{ campaign().startDate | dateFormat }} – {{ campaign().endDate | dateFormat }}
+      </p>
+    </div>
+
+    <app-icon
+      name="chevron-right"
+      [size]="20"
+      class="shrink-0 transition group-hover:translate-x-0.5"
+      [class]="ended() ? 'text-muted' : 'text-brand-brown'"
+    />
+  </div>
+</ion-item>

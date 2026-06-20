@@ -1,0 +1,13 @@
+<header
+  class="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-2 bg-brand-brown px-3 py-3 text-white shadow-soft md:-mx-8 md:rounded-xl md:px-4"
+>
+  <a
+    [routerLink]="backLink()"
+    aria-label="Voltar"
+    class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition hover:bg-white/10"
+  >
+    <app-icon name="arrow-left" [size]="22" />
+  </a>
+  <h1 class="min-w-0 flex-1 truncate text-lg font-bold">{{ title() }}</h1>
+  <ng-content />
+</header>
