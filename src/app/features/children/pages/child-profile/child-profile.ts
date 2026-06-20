@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonIcon, IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
-import { Icon } from 'src/app/shared/components/icon/icon';
 import { getInitials } from 'src/app/core/utils/name.util';
 import { VaccineTimeline } from 'src/app/features/children/components/vaccine-timeline/vaccine-timeline';
 import {
@@ -24,7 +23,7 @@ import {
     IonAvatar,
     AgePipe,
     DetailHeader,
-    Icon,
+    IonIcon,
     VaccineTimeline,
     RegisterVaccineSheet,
   ],

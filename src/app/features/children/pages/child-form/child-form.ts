@@ -11,14 +11,14 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChildService } from 'src/app/core/services/child.service';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
-import { Icon } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
 import { getInitials } from 'src/app/core/utils/name.util';
 
 type Gender = 'male' | 'female';
 
 @Component({
   selector: 'app-child-form',
-  imports: [ReactiveFormsModule, DetailHeader, Icon],
+  imports: [ReactiveFormsModule, DetailHeader, IonIcon],
   templateUrl: './child-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

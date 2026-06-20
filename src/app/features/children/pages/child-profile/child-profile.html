@@ -5,7 +5,7 @@
       aria-label="Editar"
       class="flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-white/10"
     >
-      <app-icon name="pencil" [size]="20" />
+      <ion-icon name="pencil" style="font-size: 20px" />
     </a>
   </app-detail-header>
 
@@ -30,17 +30,17 @@
 
         <div class="grid w-full grid-cols-3 gap-2">
           <div class="rounded-xl bg-brand-green/15 px-2 py-3">
-            <app-icon name="check-circle" [size]="20" class="mx-auto text-brand-green" />
+            <ion-icon name="check-circle" style="font-size: 20px" class="mx-auto text-brand-green" />
             <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().applied }}</p>
             <p class="text-xs text-muted">Aplicadas</p>
           </div>
           <div class="rounded-xl bg-brand-yellow/25 px-2 py-3">
-            <app-icon name="calendar-clock" [size]="20" class="mx-auto text-brand-yellow" />
+            <ion-icon name="calendar-clock" style="font-size: 20px" class="mx-auto text-brand-yellow" />
             <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().pending }}</p>
             <p class="text-xs text-muted">Pendentes</p>
           </div>
           <div class="rounded-xl bg-brand-orange/20 px-2 py-3">
-            <app-icon name="alert-triangle" [size]="20" class="mx-auto text-brand-orange" />
+            <ion-icon name="alert-triangle" style="font-size: 20px" class="mx-auto text-brand-orange" />
             <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().overdue }}</p>
             <p class="text-xs text-muted">Atrasadas</p>
           </div>

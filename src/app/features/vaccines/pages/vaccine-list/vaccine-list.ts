@@ -3,7 +3,7 @@ import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { Vaccine } from 'src/app/shared/models/vaccine.model';
 import { VaccineCard } from 'src/app/shared/components/vaccine-card/vaccine-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
-import { Icon } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
 import { ageGroupLabel } from 'src/app/core/utils/age.util';
 
 interface VaccineGroup {
@@ -29,7 +29,7 @@ const AGE_RANGE_FILTERS: AgeRangeFilter[] = [
 
 @Component({
   selector: 'app-vaccine-list',
-  imports: [VaccineCard, EmptyState, Icon],
+  imports: [VaccineCard, EmptyState, IonIcon],
   templateUrl: './vaccine-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

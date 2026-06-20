@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output } from '@angu
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { toIsoDate, today } from 'src/app/core/utils/date.util';
-import { Icon } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
 
 export interface RegisterData {
   applicationDate: string;
@@ -12,7 +12,7 @@ export interface RegisterData {
 
 @Component({
   selector: 'app-register-vaccine-sheet',
-  imports: [ReactiveFormsModule, Icon],
+  imports: [ReactiveFormsModule, IonIcon],
   templateUrl: './register-vaccine-sheet.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

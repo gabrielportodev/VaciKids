@@ -7,7 +7,7 @@
   <label
     class="flex items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
   >
-    <app-icon name="search" [size]="18" class="text-muted" />
+    <ion-icon name="search" style="font-size: 18px" class="text-muted" />
     <input
       type="search"
       [value]="search()"
@@ -21,7 +21,7 @@
     <label
       class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
     >
-      <app-icon name="syringe" [size]="18" class="text-muted" />
+      <ion-icon name="syringe" style="font-size: 18px" class="text-muted" />
       <span class="sr-only">Filtrar por número de doses</span>
       <select
         [value]="doseFilter()"
@@ -37,7 +37,7 @@
     <label
       class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
     >
-      <app-icon name="filter" [size]="18" class="text-muted" />
+      <ion-icon name="filter" style="font-size: 18px" class="text-muted" />
       <span class="sr-only">Filtrar por tempo ideal de vacinação</span>
       <select
         [value]="ageFilter()"

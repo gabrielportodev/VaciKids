@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Icon } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-detail-header',
-  imports: [RouterLink, Icon],
+  imports: [RouterLink, IonIcon],
   templateUrl: './detail-header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

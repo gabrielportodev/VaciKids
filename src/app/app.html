@@ -16,7 +16,7 @@
         <span
           class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-green text-brand-brown"
         >
-          <app-icon name="shield-check" [size]="22" />
+          <ion-icon name="shield-check" style="font-size: 22px" />
         </span>
         @if (showLabels()) {
           <span class="text-lg font-extrabold text-white">VaciKids</span>
@@ -25,7 +25,7 @@
     </div>
 
     @if (showNav()) {
-      <div class="flex flex-1 flex-col gap-1 overflow-y-auto">
+      <div class="flex flex-1 flex-col gap-1 overflow-y-auto scrollbar-none">
         @for (item of navItems; track item.path) {
           <a
             [routerLink]="item.path"
@@ -34,7 +34,7 @@
             class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
             [class.justify-center]="iconOnly()"
           >
-            <app-icon [name]="item.icon" [size]="22" />
+            <ion-icon [name]="item.icon" style="font-size: 22px" />
             @if (showLabels()) {
               {{ item.label }}
             }
@@ -50,9 +50,9 @@
           class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
           [class.justify-center]="iconOnly()"
         >
-          <app-icon
+          <ion-icon
             name="chevrons-left"
-            [size]="18"
+            style="font-size: 18px"
             class="shrink-0 transition-transform"
             [class.rotate-180]="iconOnly()"
           />
@@ -68,7 +68,7 @@
         aria-label="Abrir menu"
         class="flex h-9 w-9 items-center justify-center rounded-lg text-white/60 transition hover:bg-white/5 hover:text-white"
       >
-        <app-icon name="menu" [size]="20" />
+        <ion-icon name="menu" style="font-size: 20px" />
       </button>
     }
   </aside>
@@ -83,13 +83,13 @@
         aria-label="Abrir menu"
         class="flex h-9 w-9 items-center justify-center rounded-lg text-brand-brown transition hover:bg-brand-brown/5"
       >
-        <app-icon name="menu" [size]="22" />
+        <ion-icon name="menu" style="font-size: 22px" />
       </button>
       <a routerLink="/dashboard" class="flex items-center gap-2">
         <span
           class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-green text-brand-brown"
         >
-          <app-icon name="shield-check" [size]="18" />
+          <ion-icon name="shield-check" style="font-size: 18px" />
         </span>
         <span class="font-extrabold text-brand-brown">VaciKids</span>
       </a>

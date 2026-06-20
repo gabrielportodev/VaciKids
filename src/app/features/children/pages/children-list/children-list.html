@@ -5,7 +5,7 @@
       routerLink="/children/new"
       class="hidden items-center gap-1.5 rounded-lg bg-brand-green px-4 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95 sm:inline-flex"
     >
-      <app-icon name="plus" [size]="18" [strokeWidth]="2.5" />
+      <ion-icon name="plus" style="font-size: 18px" />
       Adicionar criança
     </a>
   </header>
@@ -14,7 +14,7 @@
     <label
       class="flex flex-1 items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
     >
-      <app-icon name="search" [size]="18" class="text-muted" />
+      <ion-icon name="search" style="font-size: 18px" class="text-muted" />
       <input
         type="search"
         [value]="search()"
@@ -26,7 +26,7 @@
     <label
       class="flex items-center gap-2 rounded-lg bg-card px-3 shadow-soft focus-within:ring-2 focus-within:ring-brand-green/50"
     >
-      <app-icon name="filter" [size]="18" class="text-muted" />
+      <ion-icon name="filter" style="font-size: 18px" class="text-muted" />
       <span class="sr-only">Filtrar por idade</span>
       <select
         [value]="ageFilter()"
@@ -73,5 +73,5 @@
   aria-label="Adicionar criança"
   class="fixed right-5 bottom-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-brand-green text-brand-brown shadow-card transition hover:brightness-95 active:scale-95 sm:hidden"
 >
-  <app-icon name="plus" [size]="26" [strokeWidth]="2.5" />
+  <ion-icon name="plus" style="font-size: 26px" />
 </a>

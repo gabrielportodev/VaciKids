@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonCard, IonCardContent, IonItem } from '@ionic/angular/standalone';
+import { IonIcon, IonCard, IonCardContent, IonItem } from '@ionic/angular/standalone';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
@@ -10,11 +10,10 @@ import { getAgeInMonths, campaignAudienceLabel } from 'src/app/core/utils/age.ut
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
 import { StatusBadge } from 'src/app/shared/components/status-badge/status-badge';
-import { Icon } from 'src/app/shared/components/icon/icon';
 
 @Component({
   selector: 'app-campaign-detail',
-  imports: [RouterLink, IonCard, IonCardContent, IonItem, DateFormatPipe, AgePipe, StatusBadge, Icon],
+  imports: [RouterLink, IonCard, IonCardContent, IonItem, DateFormatPipe, AgePipe, StatusBadge, IonIcon],
   templateUrl: './campaign-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

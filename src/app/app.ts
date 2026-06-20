@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Icon, IconName } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
+import { IconName } from 'src/app/shared/icons';
 
 interface NavItem {
   label: string;
@@ -12,7 +13,7 @@ type SidebarState = 'open' | 'collapsed' | 'closed';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, Icon],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, IonIcon],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

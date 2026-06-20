@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { IonItem } from '@ionic/angular/standalone';
+import { IonIcon, IonItem } from '@ionic/angular/standalone';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
-import { Icon } from 'src/app/shared/components/icon/icon';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 
 interface HistoryGroup {
@@ -16,7 +15,7 @@ interface HistoryGroup {
 
 @Component({
   selector: 'app-history-page',
-  imports: [IonItem, EmptyState, Icon, DateFormatPipe],
+  imports: [IonItem, EmptyState, IonIcon, DateFormatPipe],
   templateUrl: './history-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

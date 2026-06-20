@@ -14,13 +14,13 @@
         } @else if (initials()) {
           {{ initials() }}
         } @else {
-          <app-icon name="camera" [size]="28" class="text-brand-brown/50" />
+          <ion-icon name="camera" style="font-size: 28px" class="text-brand-brown/50" />
         }
       </span>
       <span
         class="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-brand-green text-brand-brown"
       >
-        <app-icon name="camera" [size]="16" />
+        <ion-icon name="camera" style="font-size: 16px" />
       </span>
       <input type="file" accept="image/*" class="sr-only" (change)="onPhotoSelected($event)" />
     </label>
@@ -97,7 +97,7 @@
         (click)="remove()"
         class="flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-bold text-red-600 transition hover:bg-red-50"
       >
-        <app-icon name="trash" [size]="18" />
+        <ion-icon name="trash" style="font-size: 18px" />
         Excluir criança
       </button>
     }

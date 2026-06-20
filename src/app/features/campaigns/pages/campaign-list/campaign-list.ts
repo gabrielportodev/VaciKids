@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { isPast, parseIsoDate } from 'src/app/core/utils/date.util';
-import { Icon } from 'src/app/shared/components/icon/icon';
+import { IonIcon } from '@ionic/angular/standalone';
 import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 
@@ -24,7 +24,7 @@ const AGE_FILTERS: AgeFilter[] = [
 
 @Component({
   selector: 'app-campaign-list',
-  imports: [CampaignCard, EmptyState, Icon],
+  imports: [CampaignCard, EmptyState, IonIcon],
   templateUrl: './campaign-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

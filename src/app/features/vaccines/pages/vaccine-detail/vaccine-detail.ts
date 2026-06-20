@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonIcon, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
-import { Icon } from 'src/app/shared/components/icon/icon';
 import { ageGroupLabel } from 'src/app/core/utils/age.util';
 
 const ADMINISTRATION_ROUTE: Record<string, string> = {
@@ -19,7 +18,7 @@ const ADMINISTRATION_ROUTE: Record<string, string> = {
 
 @Component({
   selector: 'app-vaccine-detail',
-  imports: [IonCard, IonCardContent, DetailHeader, Icon],
+  imports: [IonCard, IonCardContent, DetailHeader, IonIcon],
   templateUrl: './vaccine-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
