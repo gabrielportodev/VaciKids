@@ -1,1 +1,1 @@
-export type VaccinationStatus = 'applied' | 'pending' | 'overdue' | 'scheduled';
+export type VaccinationStatus = 'applied' | 'pending' | 'overdue';

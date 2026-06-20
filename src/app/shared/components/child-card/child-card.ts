@@ -1,23 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonIcon, IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { Child } from 'src/app/shared/models/child.model';
+import { ChildSummary } from 'src/app/shared/models/child-summary.model';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
-import { Icon } from 'src/app/shared/components/icon/icon';
 import { getInitials } from 'src/app/core/utils/name.util';
-
-export interface ChildSummary {
-  applied: number;
-  pending: number;
-  overdue: number;
-  total: number;
-  appliedPercent: number;
-  overduePercent: number;
-}
 
 @Component({
   selector: 'app-child-card',
-  imports: [RouterLink, IonCard, IonCardContent, IonAvatar, AgePipe, Icon],
+  imports: [RouterLink, IonCard, IonCardContent, IonAvatar, AgePipe, IonIcon],
   templateUrl: './child-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -9,16 +9,15 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { IonItem } from '@ionic/angular/standalone';
+import { IonIcon, IonItem } from '@ionic/angular/standalone';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { StatusBadge } from 'src/app/shared/components/status-badge/status-badge';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
-import { Icon } from 'src/app/shared/components/icon/icon';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { ageGroupLabel } from 'src/app/core/utils/age.util';
 import { daysOverdue } from 'src/app/core/utils/date.util';
-import { statusBorderClass, statusIcon, statusIconColor } from 'src/app/core/utils/status.util';
+import { statusVisual } from 'src/app/core/utils/status.util';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
 
 type Filter = 'all' | 'pending' | 'overdue' | 'applied';
@@ -31,7 +30,7 @@ interface TimelineGroup {
 
 @Component({
   selector: 'app-vaccine-timeline',
-  imports: [NgTemplateOutlet, RouterLink, IonItem, StatusBadge, EmptyState, Icon, DateFormatPipe],
+  imports: [NgTemplateOutlet, RouterLink, IonItem, StatusBadge, EmptyState, IonIcon, DateFormatPipe],
   templateUrl: './vaccine-timeline.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,7 +50,7 @@ export class VaccineTimeline {
       {
         key: 'pending' as Filter,
         label: 'Pendentes',
-        count: count((r) => r.status === 'pending' || r.status === 'scheduled'),
+        count: count((r) => r.status === 'pending'),
       },
       { key: 'overdue' as Filter, label: 'Atrasadas', count: count((r) => r.status === 'overdue') },
       { key: 'applied' as Filter, label: 'Aplicadas', count: count((r) => r.status === 'applied') },
@@ -62,7 +61,7 @@ export class VaccineTimeline {
     const f = this.filter();
     return this.records().filter((r) => {
       if (f === 'all') return true;
-      if (f === 'pending') return r.status === 'pending' || r.status === 'scheduled';
+      if (f === 'pending') return r.status === 'pending';
       return r.status === f;
     });
   });
@@ -88,15 +87,15 @@ export class VaccineTimeline {
   }
 
   borderClass(status: VaccinationStatus): string {
-    return statusBorderClass(status);
+    return statusVisual(status).borderClass;
   }
 
   icon(status: VaccinationStatus) {
-    return statusIcon(status);
+    return statusVisual(status).icon;
   }
 
   iconColor(status: VaccinationStatus): string {
-    return statusIconColor(status);
+    return statusVisual(status).iconColor;
   }
 
   daysLate(iso: string): number {

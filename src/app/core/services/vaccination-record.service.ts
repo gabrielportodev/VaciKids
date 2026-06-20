@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
 import { MOCK_RECORDS } from 'src/app/shared/constants/mock-records.constant';
+import { ChildSummary } from 'src/app/shared/models/child-summary.model';
 import { resolveStatus } from 'src/app/core/utils/status.util';
 import { toIsoDate, today } from 'src/app/core/utils/date.util';
 
@@ -25,14 +26,7 @@ export class VaccinationRecordService {
     return this.byChild(childId).filter((record) => record.vaccineId === vaccineId);
   }
 
-  summaryByChild(childId: string): {
-    applied: number;
-    pending: number;
-    overdue: number;
-    total: number;
-    appliedPercent: number;
-    overduePercent: number;
-  } {
+  summaryByChild(childId: string): ChildSummary {
     const records = this.byChild(childId);
     const total = records.length;
     const applied = records.filter((r) => r.status === 'applied').length;
