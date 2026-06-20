@@ -1,44 +1,104 @@
-<div class="min-h-dvh md:flex">
-  <aside class="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col gap-1 bg-brand-brown p-4 md:flex">
-    <a routerLink="/dashboard" class="mb-4 flex items-center gap-2 px-2 py-2">
-      <span
-        class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-green text-brand-brown"
-      >
-        <app-icon name="shield-check" [size]="22" />
-      </span>
-      <span class="text-lg font-extrabold text-white">VaciKids</span>
-    </a>
+@if (mobileMenuOpen()) {
+  <div
+    class="vk-overlay fixed inset-0 z-40 bg-brand-brown/50 md:hidden"
+    role="presentation"
+    (click)="closeMobileMenu()"
+  ></div>
+}
 
-    @for (item of navItems; track item.path) {
-      <a
-        [routerLink]="item.path"
-        routerLinkActive="bg-white/10 !text-white"
-        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
-      >
-        <app-icon [name]="item.icon" [size]="22" />
-        {{ item.label }}
+<div class="min-h-dvh md:flex">
+  <aside
+    class="fixed inset-y-0 left-0 z-50 flex h-dvh w-64 flex-col gap-1 overflow-hidden bg-brand-brown p-3 transition-[transform,width] duration-300 md:sticky md:top-0 md:z-0 md:shrink-0"
+    [class]="asideClasses()"
+  >
+    <div class="flex items-center gap-2 px-1 py-2" [class.justify-center]="iconOnly()">
+      <a routerLink="/dashboard" class="flex items-center gap-2" (click)="closeMobileMenu()">
+        <span
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-green text-brand-brown"
+        >
+          <app-icon name="shield-check" [size]="22" />
+        </span>
+        @if (showLabels()) {
+          <span class="text-lg font-extrabold text-white">VaciKids</span>
+        }
       </a>
+    </div>
+
+    @if (showNav()) {
+      <div class="flex flex-1 flex-col gap-1 overflow-y-auto">
+        @for (item of navItems; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="bg-white/10 !text-white"
+            (click)="closeMobileMenu()"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
+            [class.justify-center]="iconOnly()"
+          >
+            <app-icon [name]="item.icon" [size]="22" />
+            @if (showLabels()) {
+              {{ item.label }}
+            }
+          </a>
+        }
+      </div>
+
+      <div class="hidden border-t border-white/10 pt-2 md:block">
+        <button
+          type="button"
+          (click)="toggleCollapse()"
+          aria-label="Recolher ou expandir menu"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
+          [class.justify-center]="iconOnly()"
+        >
+          <app-icon
+            name="chevrons-left"
+            [size]="18"
+            class="shrink-0 transition-transform"
+            [class.rotate-180]="iconOnly()"
+          />
+          @if (showLabels()) {
+            <span>Recolher</span>
+          }
+        </button>
+      </div>
+    } @else {
+      <button
+        type="button"
+        (click)="openSidebar()"
+        aria-label="Abrir menu"
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-white/60 transition hover:bg-white/5 hover:text-white"
+      >
+        <app-icon name="menu" [size]="20" />
+      </button>
     }
   </aside>
 
-  <main class="flex-1 pb-24 md:pb-0">
-    <div class="mx-auto w-full max-w-300 px-4 py-5 md:px-8 md:py-8">
-      <router-outlet />
-    </div>
-  </main>
-
-  <nav
-    class="fixed inset-x-0 bottom-0 z-30 flex border-t border-brand-brown/10 bg-card/95 backdrop-blur-sm md:hidden"
-  >
-    @for (tab of tabs; track tab.path) {
-      <a
-        [routerLink]="tab.path"
-        routerLinkActive="!text-brand-green"
-        class="flex flex-1 flex-col items-center gap-1 py-2.5 text-[0.7rem] font-semibold text-muted transition"
+  <div class="flex min-h-dvh min-w-0 flex-1 flex-col">
+    <header
+      class="sticky top-0 z-30 flex items-center gap-3 border-b border-brand-brown/10 bg-card/95 px-4 py-3 backdrop-blur-sm md:hidden"
+    >
+      <button
+        type="button"
+        (click)="openMobileMenu()"
+        aria-label="Abrir menu"
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-brand-brown transition hover:bg-brand-brown/5"
       >
-        <app-icon [name]="tab.icon" [size]="24" />
-        {{ tab.label }}
+        <app-icon name="menu" [size]="22" />
+      </button>
+      <a routerLink="/dashboard" class="flex items-center gap-2">
+        <span
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-green text-brand-brown"
+        >
+          <app-icon name="shield-check" [size]="18" />
+        </span>
+        <span class="font-extrabold text-brand-brown">VaciKids</span>
       </a>
-    }
-  </nav>
+    </header>
+
+    <main class="min-w-0 flex-1">
+      <div class="mx-auto w-full max-w-300 min-w-0 px-4 py-5 md:px-8 md:py-8">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
 </div>

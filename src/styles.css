@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* Apenas o core do Ionic (tokens/variáveis). Não importamos typography/normalize/etc.
+   porque eles sobrescrevem títulos, fontes e espaçamentos do nosso design Tailwind. */
+@import '@ionic/angular/css/core.css';
+
 @theme {
   --color-brand-green: #abc270;
   --color-brand-yellow: #fec868;
@@ -28,8 +32,13 @@ body {
   height: 100%;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
   background-color: var(--color-surface);
   color: var(--color-brand-brown);
   font-family: var(--font-sans);
@@ -96,4 +105,173 @@ button {
   .vk-skeleton::after {
     animation: none;
   }
+}
+
+/* Cores customizadas do Ionic (paleta obrigatória do desafio) — uso via color="brand-green" etc. */
+:root {
+  --ion-color-brand-green: #abc270;
+  --ion-color-brand-green-rgb: 171, 194, 112;
+  --ion-color-brand-green-contrast: #473c33;
+  --ion-color-brand-green-contrast-rgb: 71, 60, 51;
+  --ion-color-brand-green-shade: #96ab62;
+  --ion-color-brand-green-tint: #b3c87d;
+
+  --ion-color-brand-yellow: #fec868;
+  --ion-color-brand-yellow-rgb: 254, 200, 104;
+  --ion-color-brand-yellow-contrast: #473c33;
+  --ion-color-brand-yellow-contrast-rgb: 71, 60, 51;
+  --ion-color-brand-yellow-shade: #e0b05c;
+  --ion-color-brand-yellow-tint: #fecd77;
+
+  --ion-color-brand-orange: #fda769;
+  --ion-color-brand-orange-rgb: 253, 167, 105;
+  --ion-color-brand-orange-contrast: #473c33;
+  --ion-color-brand-orange-contrast-rgb: 71, 60, 51;
+  --ion-color-brand-orange-shade: #df935c;
+  --ion-color-brand-orange-tint: #fdb078;
+
+  --ion-color-brand-brown: #473c33;
+  --ion-color-brand-brown-rgb: 71, 60, 51;
+  --ion-color-brand-brown-contrast: #ffffff;
+  --ion-color-brand-brown-contrast-rgb: 255, 255, 255;
+  --ion-color-brand-brown-shade: #3e342d;
+  --ion-color-brand-brown-tint: #594e47;
+}
+
+.ion-color-brand-green {
+  --ion-color-base: var(--ion-color-brand-green);
+  --ion-color-base-rgb: var(--ion-color-brand-green-rgb);
+  --ion-color-contrast: var(--ion-color-brand-green-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-brand-green-contrast-rgb);
+  --ion-color-shade: var(--ion-color-brand-green-shade);
+  --ion-color-tint: var(--ion-color-brand-green-tint);
+}
+
+.ion-color-brand-yellow {
+  --ion-color-base: var(--ion-color-brand-yellow);
+  --ion-color-base-rgb: var(--ion-color-brand-yellow-rgb);
+  --ion-color-contrast: var(--ion-color-brand-yellow-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-brand-yellow-contrast-rgb);
+  --ion-color-shade: var(--ion-color-brand-yellow-shade);
+  --ion-color-tint: var(--ion-color-brand-yellow-tint);
+}
+
+.ion-color-brand-orange {
+  --ion-color-base: var(--ion-color-brand-orange);
+  --ion-color-base-rgb: var(--ion-color-brand-orange-rgb);
+  --ion-color-contrast: var(--ion-color-brand-orange-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-brand-orange-contrast-rgb);
+  --ion-color-shade: var(--ion-color-brand-orange-shade);
+  --ion-color-tint: var(--ion-color-brand-orange-tint);
+}
+
+.ion-color-brand-brown {
+  --ion-color-base: var(--ion-color-brand-brown);
+  --ion-color-base-rgb: var(--ion-color-brand-brown-rgb);
+  --ion-color-contrast: var(--ion-color-brand-brown-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-brand-brown-contrast-rgb);
+  --ion-color-shade: var(--ion-color-brand-brown-shade);
+  --ion-color-tint: var(--ion-color-brand-brown-tint);
+}
+
+:root {
+  --ion-background-color: var(--color-surface);
+  --ion-text-color: var(--color-brand-brown);
+  --ion-font-family: var(--font-sans);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Neutralizador do Ionic
+   Removemos o "chrome" padrão dos componentes Ionic (fundos, paddings, sombras,
+   bordas, ripple, uppercase) para que as classes utilitárias do Tailwind nos
+   templates controlem 100% da aparência — mantendo o mesmo visual de antes.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ion-app não deve criar contexto de layout próprio (fixed/contain): mantemos o
+   fluxo normal do documento usado pelo nosso layout com sidebar sticky. */
+ion-app {
+  display: contents;
+}
+
+/* Cards = apenas um contêiner; o visual vem das classes Tailwind no host. */
+ion-card {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  --background: transparent;
+  --color: inherit;
+  contain: none;
+}
+ion-card-content {
+  padding: 0;
+  --color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Itens de lista = linha transparente; usamos um <div> interno com as classes
+   originais. Zeramos paddings, bordas, alturas mínimas e estados de toque. */
+ion-list {
+  background: transparent;
+  padding: 0;
+}
+ion-item {
+  --background: transparent;
+  --background-hover-opacity: 0;
+  --background-activated-opacity: 0;
+  --background-focused-opacity: 0;
+  --border-width: 0;
+  --border-color: transparent;
+  --inner-border-width: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-padding-top: 0;
+  --inner-padding-bottom: 0;
+  --min-height: 0;
+  --ripple-color: transparent;
+  --color: inherit;
+  font-size: inherit;
+  overflow: visible;
+}
+ion-item::part(native) {
+  padding: 0;
+  min-height: 0;
+}
+/* O conteúdo (div interno) ocupa a largura toda da linha. */
+ion-item .vk-row {
+  width: 100%;
+}
+
+/* Badge = pílula controlada por Tailwind (sem fundo/upper/padding do Ionic). */
+ion-badge {
+  --background: transparent;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  border-radius: 0;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+/* Botões: sem uppercase, com cantos/altura definidos pelas classes Tailwind. */
+ion-button {
+  --box-shadow: none;
+  --ripple-color: transparent;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0;
+  font-family: inherit;
+}
+
+ion-avatar {
+  --border-radius: 9999px;
 }

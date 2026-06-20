@@ -22,6 +22,6 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('VaciKids');
-    expect(compiled.querySelectorAll('nav a').length).toBe(4);
+    expect(compiled.querySelectorAll('aside a[routerlinkactive]').length).toBe(5);
   });
 });
