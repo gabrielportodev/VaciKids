@@ -5,17 +5,7 @@
 >
   <ion-card-content class="p-4">
     <div class="flex items-center gap-3">
-      @if (child().photoUrl) {
-        <ion-avatar class="h-12 w-12 shrink-0">
-          <img [src]="child().photoUrl" [alt]="child().name" />
-        </ion-avatar>
-      } @else {
-        <span
-          class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-green/25 text-base font-extrabold text-brand-brown"
-        >
-          {{ initials() }}
-        </span>
-      }
+      <app-child-avatar [name]="child().name" [photoUrl]="child().photoUrl" />
 
       <div class="min-w-0 flex-1">
         <strong class="block truncate text-brand-brown">{{ child().name }}</strong>

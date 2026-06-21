@@ -42,13 +42,13 @@ describe('ChildCard', () => {
 
   it('should show initials when there is no photo', () => {
     const el = render(child).nativeElement as HTMLElement;
-    expect(el.querySelector('ion-avatar')).toBeNull();
+    expect(el.querySelector('app-child-avatar img')).toBeNull();
     expect(el.textContent).toContain('MS');
   });
 
   it('should render the photo when photoUrl is provided', () => {
     const el = render({ ...child, photoUrl: 'photo.png' }).nativeElement as HTMLElement;
-    const img = el.querySelector('ion-avatar img');
+    const img = el.querySelector('app-child-avatar img');
     expect(img?.getAttribute('src')).toBe('photo.png');
   });
 

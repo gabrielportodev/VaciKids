@@ -18,6 +18,8 @@ import { getInitials } from 'src/app/core/utils';
 
 type Gender = 'male' | 'female';
 
+const MAX_PHOTO_SIZE_BYTES = 2 * 1024 * 1024;
+
 @Component({
   selector: 'app-child-form',
   imports: [ReactiveFormsModule, DetailHeader, Loading, IonIcon],
@@ -69,8 +71,14 @@ export class ChildForm {
   }
 
   onPhotoSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (!file) return;
+    if (file.size > MAX_PHOTO_SIZE_BYTES) {
+      input.value = '';
+      void this.notifications.error(null, 'A foto deve ter no máximo 2MB.');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       const url = reader.result as string;

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonIcon, IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonIcon, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -9,7 +9,7 @@ import { AgePipe } from 'src/app/shared/pipes/age.pipe';
 import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
 import { Loading } from 'src/app/shared/components/loading/loading';
-import { getInitials } from 'src/app/core/utils';
+import { ChildAvatar } from 'src/app/shared/components/child-avatar/child-avatar';
 import { VaccineTimeline } from 'src/app/features/children/components/vaccine-timeline/vaccine-timeline';
 import {
   RegisterData,
@@ -22,7 +22,7 @@ import {
     RouterLink,
     IonCard,
     IonCardContent,
-    IonAvatar,
+    ChildAvatar,
     AgePipe,
     VaccineNamePipe,
     DetailHeader,
@@ -51,8 +51,6 @@ export class ChildProfile {
 
   readonly selectedRecord = signal<VaccinationRecord | null>(null);
   readonly registering = signal(false);
-
-  readonly initials = computed(() => getInitials(this.child()?.name));
 
   openRegister(record: VaccinationRecord): void {
     this.selectedRecord.set(record);

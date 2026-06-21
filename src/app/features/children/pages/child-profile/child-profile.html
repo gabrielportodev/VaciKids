@@ -15,17 +15,7 @@
     <ion-card class="rounded-xl bg-card shadow-soft">
       <ion-card-content class="p-4">
         <div class="flex items-center gap-3">
-          @if (child.photoUrl) {
-            <ion-avatar class="h-14 w-14 shrink-0">
-              <img [src]="child.photoUrl" [alt]="child.name" />
-            </ion-avatar>
-          } @else {
-            <span
-              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-green/25 text-lg font-extrabold text-brand-brown"
-            >
-              {{ initials() }}
-            </span>
-          }
+          <app-child-avatar [name]="child.name" [photoUrl]="child.photoUrl" size="lg" />
           <div class="min-w-0 text-left">
             <h2 class="truncate text-lg font-extrabold text-brand-brown">{{ child.name }}</h2>
             <p class="text-sm text-muted">{{ child.birthDate | age }}</p>
