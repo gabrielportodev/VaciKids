@@ -1,4 +1,6 @@
-@if (child(); as child) {
+@if (loading()) {
+  <app-loading label="Carregando perfil…" />
+} @else if (child(); as child) {
   <app-detail-header [title]="child.name" backLink="/children">
     <a
       [routerLink]="['/children', child.id, 'edit']"
@@ -11,37 +13,51 @@
 
   <section class="space-y-6">
     <ion-card class="rounded-xl bg-card shadow-soft">
-      <ion-card-content class="flex flex-col items-center gap-3 p-6 text-center">
-        @if (child.photoUrl) {
-          <ion-avatar class="h-20 w-20">
-            <img [src]="child.photoUrl" [alt]="child.name" />
-          </ion-avatar>
-        } @else {
-          <span
-            class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-green/25 text-2xl font-extrabold text-brand-brown"
-          >
-            {{ initials() }}
-          </span>
-        }
-        <div>
-          <h2 class="text-xl font-extrabold text-brand-brown">{{ child.name }}</h2>
-          <p class="text-muted">{{ child.birthDate | age }}</p>
+      <ion-card-content class="p-4">
+        <div class="flex items-center gap-3">
+          @if (child.photoUrl) {
+            <ion-avatar class="h-14 w-14 shrink-0">
+              <img [src]="child.photoUrl" [alt]="child.name" />
+            </ion-avatar>
+          } @else {
+            <span
+              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-green/25 text-lg font-extrabold text-brand-brown"
+            >
+              {{ initials() }}
+            </span>
+          }
+          <div class="min-w-0 text-left">
+            <h2 class="truncate text-lg font-extrabold text-brand-brown">{{ child.name }}</h2>
+            <p class="text-sm text-muted">{{ child.birthDate | age }}</p>
+          </div>
         </div>
 
-        <div class="grid w-full grid-cols-3 gap-2">
-          <div class="rounded-xl bg-brand-green/15 px-2 py-3">
-            <ion-icon name="check-circle" style="font-size: 20px" class="mx-auto text-brand-green" />
-            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().applied }}</p>
+        <div class="mt-3 grid w-full grid-cols-3 gap-2 text-center">
+          <div class="rounded-xl bg-brand-green/15 px-2 py-2">
+            <ion-icon
+              name="check-circle"
+              style="font-size: 20px"
+              class="mx-auto text-brand-green"
+            />
+            <p class="mt-0.5 text-base font-extrabold text-brand-brown">{{ summary().applied }}</p>
             <p class="text-xs text-muted">Aplicadas</p>
           </div>
-          <div class="rounded-xl bg-brand-yellow/25 px-2 py-3">
-            <ion-icon name="calendar-clock" style="font-size: 20px" class="mx-auto text-brand-yellow" />
-            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().pending }}</p>
+          <div class="rounded-xl bg-brand-yellow/25 px-2 py-2">
+            <ion-icon
+              name="calendar-clock"
+              style="font-size: 20px"
+              class="mx-auto text-brand-yellow"
+            />
+            <p class="mt-0.5 text-base font-extrabold text-brand-brown">{{ summary().pending }}</p>
             <p class="text-xs text-muted">Pendentes</p>
           </div>
-          <div class="rounded-xl bg-brand-orange/20 px-2 py-3">
-            <ion-icon name="alert-triangle" style="font-size: 20px" class="mx-auto text-brand-orange" />
-            <p class="mt-1 text-lg font-extrabold text-brand-brown">{{ summary().overdue }}</p>
+          <div class="rounded-xl bg-brand-orange/20 px-2 py-2">
+            <ion-icon
+              name="alert-triangle"
+              style="font-size: 20px"
+              class="mx-auto text-brand-orange"
+            />
+            <p class="mt-0.5 text-base font-extrabold text-brand-brown">{{ summary().overdue }}</p>
             <p class="text-xs text-muted">Atrasadas</p>
           </div>
         </div>
@@ -58,6 +74,7 @@
     <app-register-vaccine-sheet
       [record]="record"
       [vaccineName]="vaccineName(record.vaccineId)"
+      [busy]="registering()"
       (confirmed)="confirmRegister($event)"
       (cancelled)="closeSheet()"
     />

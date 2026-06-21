@@ -1,7 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { toIsoDate, today } from 'src/app/core/utils/date.util';
+import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 
 export interface RegisterData {
@@ -12,7 +20,7 @@ export interface RegisterData {
 
 @Component({
   selector: 'app-register-vaccine-sheet',
-  imports: [ReactiveFormsModule, IonIcon],
+  imports: [ReactiveFormsModule, Loading, IonIcon],
   templateUrl: './register-vaccine-sheet.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -21,6 +29,7 @@ export class RegisterVaccineSheet {
 
   readonly record = input.required<VaccinationRecord>();
   readonly vaccineName = input.required<string>();
+  readonly busy = input(false, { transform: booleanAttribute });
 
   readonly confirmed = output<RegisterData>();
   readonly cancelled = output<void>();

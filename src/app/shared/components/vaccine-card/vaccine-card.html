@@ -1,6 +1,12 @@
-<ion-item [routerLink]="['/vaccines', vaccine().id]" button detail="false" lines="none">
+<ion-item
+  [routerLink]="['/vaccines', vaccine().id]"
+  button
+  detail="false"
+  lines="none"
+  class="block w-full max-w-full min-w-0"
+>
   <div
-    class="vk-row group flex items-center gap-3 rounded-xl bg-card p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card"
+    class="vk-row group flex w-full min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-xl bg-card p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card"
   >
     <span
       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green"
@@ -9,8 +15,12 @@
     </span>
 
     <div class="min-w-0 flex-1">
-      <strong class="block truncate text-brand-brown">{{ vaccine().name }}</strong>
-      <p class="truncate text-sm text-muted">{{ vaccine().description }}</p>
+      <strong class="block min-w-0 line-clamp-2 leading-5 text-brand-brown mb-0.5">
+        {{ vaccine().name }}
+      </strong>
+      <p class="min-h-10 min-w-0 flex-1 line-clamp-2 leading-5 text-sm text-muted">
+        {{ vaccine().description }}
+      </p>
       <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
         <span
           class="rounded-full bg-brand-green/15 px-2 py-0.5 text-xs font-semibold text-brand-brown"

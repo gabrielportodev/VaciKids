@@ -8,11 +8,12 @@ import { daysOverdue } from 'src/app/core/utils/date.util';
 import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
 import { ChildCard } from 'src/app/shared/components/child-card/child-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
+import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [RouterLink, CampaignCard, ChildCard, EmptyState, IonIcon],
+  imports: [RouterLink, CampaignCard, ChildCard, EmptyState, Loading, IonIcon],
   templateUrl: './dashboard-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -24,6 +25,13 @@ export class DashboardPage {
 
   readonly children = this.childService.all;
   readonly activeCampaigns = computed(() => this.campaignService.active());
+
+  readonly loading = computed(
+    () =>
+      this.childService.all.loading() ||
+      this.campaignService.all.loading() ||
+      this.recordService.loading(),
+  );
 
   readonly childCards = computed(() =>
     this.children().map((child) => ({

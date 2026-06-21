@@ -1,6 +1,12 @@
-<ion-item [routerLink]="['/campaigns', campaign().id]" button detail="false" lines="none">
+<ion-item
+  [routerLink]="['/campaigns', campaign().id]"
+  button
+  detail="false"
+  lines="none"
+  class="block w-full max-w-full min-w-0"
+>
   <div
-    class="vk-row group flex items-center gap-3 overflow-hidden rounded-xl p-4 shadow-soft transition hover:shadow-card"
+    class="vk-row group flex w-full min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-xl p-4 shadow-soft transition hover:shadow-card"
     [class]="ended() ? 'bg-brand-brown/5' : 'bg-linear-to-r from-brand-yellow to-brand-orange'"
   >
     <span
@@ -11,8 +17,10 @@
     </span>
 
     <div class="min-w-0 flex-1">
-      <div class="flex items-center gap-2">
-        <strong class="truncate text-brand-brown">{{ campaign().title }}</strong>
+      <div class="flex items-start gap-2">
+        <strong class="min-h-10 min-w-0 flex-1 line-clamp-2 leading-5 text-brand-brown">
+          {{ campaign().title }}
+        </strong>
         @if (active()) {
           <span
             class="shrink-0 rounded-full bg-white/40 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-brand-brown uppercase"

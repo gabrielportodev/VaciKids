@@ -85,20 +85,29 @@
   <div class="space-y-3 pt-2">
     <button
       type="submit"
-      [disabled]="form.invalid"
-      class="h-12 w-full rounded-lg bg-brand-green font-bold text-brand-brown transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+      [disabled]="form.invalid || submitting()"
+      class="flex h-12 w-full items-center justify-center rounded-lg bg-brand-green font-bold text-brand-brown transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
     >
-      Salvar
+      @if (submitting()) {
+        <app-loading inline [label]="isEdit() ? 'Salvando…' : 'Cadastrando…'" />
+      } @else {
+        {{ isEdit() ? 'Salvar' : 'Cadastrar' }}
+      }
     </button>
 
     @if (isEdit()) {
       <button
         type="button"
         (click)="remove()"
-        class="flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-bold text-red-600 transition hover:bg-red-50"
+        [disabled]="deleting()"
+        class="flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-bold text-red-600 transition hover:bg-red-50 disabled:opacity-50"
       >
-        <ion-icon name="trash" style="font-size: 18px" />
-        Excluir criança
+        @if (deleting()) {
+          <app-loading inline label="Excluindo…" />
+        } @else {
+          <ion-icon name="trash" style="font-size: 18px" />
+          Excluir criança
+        }
       </button>
     }
   </div>

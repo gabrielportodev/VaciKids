@@ -10,10 +10,21 @@ import { getAgeInMonths, campaignAudienceLabel } from 'src/app/core/utils/age.ut
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
 import { StatusBadge } from 'src/app/shared/components/status-badge/status-badge';
+import { Loading } from 'src/app/shared/components/loading/loading';
 
 @Component({
   selector: 'app-campaign-detail',
-  imports: [RouterLink, IonCard, IonCardContent, IonItem, DateFormatPipe, AgePipe, StatusBadge, IonIcon],
+  imports: [
+    RouterLink,
+    IonCard,
+    IonCardContent,
+    IonItem,
+    DateFormatPipe,
+    AgePipe,
+    StatusBadge,
+    Loading,
+    IonIcon,
+  ],
   templateUrl: './campaign-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -25,6 +36,7 @@ export class CampaignDetail {
 
   readonly id = input.required<string>();
   readonly campaign = computed(() => this.campaignService.getById(this.id()));
+  readonly loading = this.campaignService.all.loading;
 
   readonly audience = computed(() => {
     const c = this.campaign();

@@ -1,4 +1,6 @@
-@if (campaign(); as campaign) {
+@if (loading()) {
+  <app-loading label="Carregando campanha…" />
+} @else if (campaign(); as campaign) {
   <div
     class="-mx-4 mb-6 bg-linear-to-br from-brand-yellow to-brand-orange px-4 pt-4 pb-6 md:-mx-8 md:rounded-xl md:px-6"
   >

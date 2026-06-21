@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   computed,
+  effect,
   inject,
   input,
   signal,
@@ -10,7 +10,9 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChildService } from 'src/app/core/services/child.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
+import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 import { getInitials } from 'src/app/core/utils/name.util';
 
@@ -18,19 +20,23 @@ type Gender = 'male' | 'female';
 
 @Component({
   selector: 'app-child-form',
-  imports: [ReactiveFormsModule, DetailHeader, IonIcon],
+  imports: [ReactiveFormsModule, DetailHeader, Loading, IonIcon],
   templateUrl: './child-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChildForm implements OnInit {
+export class ChildForm {
   private readonly fb = inject(FormBuilder);
   private readonly childService = inject(ChildService);
+  private readonly notifications = inject(NotificationService);
   private readonly router = inject(Router);
 
   readonly id = input<string>();
   readonly isEdit = computed(() => !!this.id());
 
   readonly photoPreview = signal<string | null>(null);
+
+  readonly submitting = signal(false);
+  readonly deleting = signal(false);
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -41,12 +47,14 @@ export class ChildForm implements OnInit {
 
   readonly initials = computed(() => getInitials(this.form.controls.name.value));
 
-  ngOnInit(): void {
+  private patched = false;
+  private readonly prefill = effect(() => {
     const id = this.id();
-    const existing = id ? this.childService.getById(id) : undefined;
-    if (!existing) {
-      return;
-    }
+    if (!id || this.patched) return;
+    const existing = this.childService.getById(id);
+    if (!existing) return;
+
+    this.patched = true;
     this.form.patchValue({
       name: existing.name,
       birthDate: existing.birthDate,
@@ -54,7 +62,7 @@ export class ChildForm implements OnInit {
       photoUrl: existing.photoUrl ?? '',
     });
     this.photoPreview.set(existing.photoUrl ?? null);
-  }
+  });
 
   setGender(gender: Gender): void {
     this.form.controls.gender.setValue(gender);
@@ -72,27 +80,43 @@ export class ChildForm implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     const { name, birthDate, gender, photoUrl } = this.form.getRawValue();
     const value = { name, birthDate, gender, photoUrl: photoUrl || undefined };
-    if (this.isEdit()) {
-      this.childService.update(this.id()!, value);
-      this.router.navigate(['/children', this.id()]);
-    } else {
-      const created = this.childService.create(value);
-      this.router.navigate(['/children', created.id]);
+    this.submitting.set(true);
+    try {
+      if (this.isEdit()) {
+        await this.childService.update(this.id()!, value);
+        await this.router.navigate(['/children', this.id()]);
+        await this.notifications.success('Criança atualizada com sucesso.');
+      } else {
+        const created = await this.childService.create(value);
+        await this.router.navigate(['/children', created.id]);
+        await this.notifications.success('Criança adicionada com sucesso.');
+      }
+    } catch (error) {
+      await this.notifications.error(error, 'Não foi possível salvar a criança.');
+    } finally {
+      this.submitting.set(false);
     }
   }
 
-  remove(): void {
+  async remove(): Promise<void> {
     if (!this.isEdit()) return;
-    if (confirm('Tem certeza que deseja excluir esta criança?')) {
-      this.childService.remove(this.id()!);
-      this.router.navigate(['/children']);
+    if (!confirm('Tem certeza que deseja excluir esta criança?')) return;
+    this.deleting.set(true);
+    try {
+      await this.childService.remove(this.id()!);
+      await this.router.navigate(['/children']);
+      await this.notifications.success('Criança removida com sucesso.');
+    } catch (error) {
+      await this.notifications.error(error, 'Não foi possível remover a criança.');
+    } finally {
+      this.deleting.set(false);
     }
   }
 }

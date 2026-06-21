@@ -4,36 +4,42 @@
     <p class="text-muted">Todas as vacinas já aplicadas nos seus filhos.</p>
   </header>
 
-  @if (groups().length > 0) {
+  @if (loading()) {
+    <app-loading label="Carregando histórico…" />
+  } @else if (groups().length > 0) {
     <div class="space-y-6">
       @for (group of groups(); track group.childId) {
         <div class="space-y-2">
           <h2 class="text-sm font-extrabold tracking-wide text-muted uppercase">
             {{ group.childName }}
           </h2>
-          @for (record of group.records; track record.id) {
-            <ion-item lines="none">
-              <div class="vk-row flex items-center gap-3 rounded-xl bg-card p-4 shadow-soft">
-                <span
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green"
+          <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            @for (record of group.records; track record.id) {
+              <ion-item lines="none" class="block w-full max-w-full min-w-0">
+                <div
+                  class="vk-row flex min-h-28 max-h-28 w-full min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-xl bg-card p-4 shadow-soft"
                 >
-                  <ion-icon name="check-circle" style="font-size: 20px" />
-                </span>
-                <div class="min-w-0 flex-1">
-                  <strong class="block truncate text-brand-brown">
-                    {{ vaccineName(record.vaccineId) }}
-                    <span class="font-normal text-muted">· {{ record.dose }}ª dose</span>
-                  </strong>
-                  <p class="truncate text-xs text-muted">
-                    Aplicada em {{ record.applicationDate | dateFormat }}
-                    @if (record.healthUnit) {
-                      · {{ record.healthUnit }}
-                    }
-                  </p>
+                  <span
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green"
+                  >
+                    <ion-icon name="check-circle" style="font-size: 20px" />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <strong class="mb-0.5 block min-w-0 line-clamp-2 leading-5 text-brand-brown">
+                      {{ vaccineName(record.vaccineId) }}
+                      <span class="font-normal text-muted">· {{ record.dose }}ª dose</span>
+                    </strong>
+                    <p class="min-w-0 line-clamp-2 text-xs leading-5 text-muted">
+                      Aplicada em {{ record.applicationDate | dateFormat }}
+                      @if (record.healthUnit) {
+                        · {{ record.healthUnit }}
+                      }
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </ion-item>
-          }
+              </ion-item>
+            }
+          </div>
         </div>
       }
     </div>

@@ -6,75 +6,88 @@
     </div>
   </header>
 
-  @if (overdueAlerts().length > 0) {
-    <div class="space-y-3">
-      <div class="flex items-center gap-2">
-        <ion-icon name="alert-triangle" style="font-size: 18px" class="text-brand-orange" />
-        <h2 class="font-bold text-brand-brown">Vacinas atrasadas</h2>
+  @if (loading()) {
+    <app-loading label="Carregando seu painel…" />
+  } @else {
+    @if (overdueAlerts().length > 0) {
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <ion-icon name="alert-triangle" style="font-size: 18px" class="text-brand-orange" />
+          <h2 class="font-bold text-brand-brown">Vacinas atrasadas</h2>
+        </div>
+        <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+          @for (alert of overdueAlerts(); track alert.childId + alert.vaccine + alert.dose) {
+            <a
+              [routerLink]="['/children', alert.childId]"
+              class="block w-full min-w-0 rounded-xl border-l-4 border-brand-orange bg-card p-4 shadow-soft transition hover:shadow-card"
+            >
+              <p class="truncate text-sm font-bold text-brand-brown">{{ alert.childName }}</p>
+              <p class="mt-0.5 truncate text-sm text-muted">
+                {{ alert.vaccine }} · {{ alert.dose }}ª dose
+              </p>
+              <p class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-brand-orange">
+                <ion-icon name="alert-triangle" style="font-size: 14px" />
+                {{ alert.days }} {{ alert.days === 1 ? 'dia' : 'dias' }} em atraso
+              </p>
+            </a>
+          }
+        </div>
       </div>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        @for (alert of overdueAlerts(); track alert.childId + alert.vaccine + alert.dose) {
-          <a
-            [routerLink]="['/children', alert.childId]"
-            class="min-w-0 rounded-xl border-l-4 border-brand-orange bg-card p-4 shadow-soft transition hover:shadow-card"
-          >
-            <p class="text-sm font-bold text-brand-brown">{{ alert.childName }}</p>
-            <p class="mt-0.5 text-sm text-muted">{{ alert.vaccine }} · {{ alert.dose }}ª dose</p>
-            <p class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-brand-orange">
-              <ion-icon name="alert-triangle" style="font-size: 14px" />
-              {{ alert.days }} {{ alert.days === 1 ? 'dia' : 'dias' }} em atraso
-            </p>
-          </a>
-        }
-      </div>
-    </div>
-  }
+    }
 
-  @if (activeCampaigns().length > 0) {
+    @if (activeCampaigns().length > 0) {
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-bold text-brand-brown">Campanhas ativas</h2>
+          <a
+            routerLink="/campaigns"
+            class="text-sm font-semibold text-muted hover:text-brand-brown"
+          >
+            Ver todas
+          </a>
+        </div>
+        <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+          @for (campaign of activeCampaigns(); track campaign.id) {
+            <app-campaign-card class="block w-full min-w-0" [campaign]="campaign" [active]="true" />
+          }
+        </div>
+      </div>
+    }
+
     <div class="space-y-3">
       <div class="flex items-center justify-between">
-        <h2 class="font-bold text-brand-brown">Campanhas ativas</h2>
-        <a routerLink="/campaigns" class="text-sm font-semibold text-muted hover:text-brand-brown">
+        <h2 class="font-bold text-brand-brown">Suas crianças</h2>
+        <a routerLink="/children" class="text-sm font-semibold text-muted hover:text-brand-brown">
           Ver todas
         </a>
       </div>
-      <div class="grid gap-3 lg:grid-cols-2">
-        @for (campaign of activeCampaigns(); track campaign.id) {
-          <app-campaign-card [campaign]="campaign" [active]="true" />
-        }
-      </div>
+
+      @if (childCards().length > 0) {
+        <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+          @for (entry of childCards(); track entry.child.id) {
+            <app-child-card
+              class="block w-full min-w-0"
+              [child]="entry.child"
+              [summary]="entry.summary"
+            />
+          }
+        </div>
+      } @else {
+        <app-empty-state
+          icon="baby"
+          title="Nenhuma criança cadastrada"
+          description="Adicione seu primeiro filho para começar a acompanhar a vacinação."
+        >
+          <a
+            routerLink="/children/new"
+            class="mt-1 rounded-lg bg-brand-green px-5 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95"
+          >
+            Adicionar criança
+          </a>
+        </app-empty-state>
+      }
     </div>
   }
-
-  <div class="space-y-3">
-    <div class="flex items-center justify-between">
-      <h2 class="font-bold text-brand-brown">Suas crianças</h2>
-      <a routerLink="/children" class="text-sm font-semibold text-muted hover:text-brand-brown">
-        Ver todas
-      </a>
-    </div>
-
-    @if (childCards().length > 0) {
-      <div class="grid gap-3 sm:grid-cols-2">
-        @for (entry of childCards(); track entry.child.id) {
-          <app-child-card [child]="entry.child" [summary]="entry.summary" />
-        }
-      </div>
-    } @else {
-      <app-empty-state
-        icon="baby"
-        title="Nenhuma criança cadastrada"
-        description="Adicione seu primeiro filho para começar a acompanhar a vacinação."
-      >
-        <a
-          routerLink="/children/new"
-          class="mt-1 rounded-lg bg-brand-green px-5 py-2.5 text-sm font-bold text-brand-brown transition hover:brightness-95"
-        >
-          Adicionar criança
-        </a>
-      </app-empty-state>
-    }
-  </div>
 </section>
 
 <a

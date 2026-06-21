@@ -58,7 +58,7 @@
           <h2 class="text-sm font-extrabold tracking-wide text-muted uppercase">
             {{ group.label }}
           </h2>
-          <div class="grid gap-3 lg:grid-cols-2">
+          <div class="grid w-full grid-cols-1 gap-3 lg:grid-cols-2">
             @for (vaccine of group.vaccines; track vaccine.id) {
               <app-vaccine-card [vaccine]="vaccine" />
             }

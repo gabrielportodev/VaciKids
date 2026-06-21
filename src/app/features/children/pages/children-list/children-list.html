@@ -40,10 +40,16 @@
     </label>
   </div>
 
-  @if (childCards().length > 0) {
-    <div class="grid gap-3 sm:grid-cols-2">
+  @if (children.loading()) {
+    <app-loading label="Carregando crianças…" />
+  } @else if (childCards().length > 0) {
+    <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
       @for (entry of childCards(); track entry.child.id) {
-        <app-child-card [child]="entry.child" [summary]="entry.summary" />
+        <app-child-card
+          class="block w-full min-w-0"
+          [child]="entry.child"
+          [summary]="entry.summary"
+        />
       }
     </div>
   } @else if (search() || hasFilters()) {

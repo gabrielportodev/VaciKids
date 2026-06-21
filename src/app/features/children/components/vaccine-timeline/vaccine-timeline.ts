@@ -30,7 +30,15 @@ interface TimelineGroup {
 
 @Component({
   selector: 'app-vaccine-timeline',
-  imports: [NgTemplateOutlet, RouterLink, IonItem, StatusBadge, EmptyState, IonIcon, DateFormatPipe],
+  imports: [
+    NgTemplateOutlet,
+    RouterLink,
+    IonItem,
+    StatusBadge,
+    EmptyState,
+    IonIcon,
+    DateFormatPipe,
+  ],
   templateUrl: './vaccine-timeline.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -69,7 +77,7 @@ export class VaccineTimeline {
   readonly groups = computed<TimelineGroup[]>(() => {
     const map = new Map<number, TimelineGroup>();
     for (const record of this.filtered()) {
-      const age = this.vaccineService.getById(record.vaccineId)?.recommendedAgeInMonths ?? 0;
+      const age = this.vaccineService.recommendedAgeForDose(record.vaccineId, record.dose);
       if (!map.has(age)) {
         map.set(age, { label: ageGroupLabel(age), ageMonths: age, records: [] });
       }

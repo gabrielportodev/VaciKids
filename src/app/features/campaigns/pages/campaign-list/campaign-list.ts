@@ -4,6 +4,7 @@ import { isPast, parseIsoDate } from 'src/app/core/utils/date.util';
 import { IonIcon } from '@ionic/angular/standalone';
 import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
+import { Loading } from 'src/app/shared/components/loading/loading';
 
 type Tab = 'active' | 'ended';
 
@@ -24,7 +25,7 @@ const AGE_FILTERS: AgeFilter[] = [
 
 @Component({
   selector: 'app-campaign-list',
-  imports: [CampaignCard, EmptyState, IonIcon],
+  imports: [CampaignCard, EmptyState, Loading, IonIcon],
   templateUrl: './campaign-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -5,6 +5,7 @@ import { VaccinationRecordService } from 'src/app/core/services/vaccination-reco
 import { getAgeInMonths } from 'src/app/core/utils/age.util';
 import { ChildCard } from 'src/app/shared/components/child-card/child-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
+import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 
 interface AgeFilter {
@@ -24,7 +25,7 @@ const AGE_FILTERS: AgeFilter[] = [
 
 @Component({
   selector: 'app-children-list',
-  imports: [RouterLink, ChildCard, EmptyState, IonIcon],
+  imports: [RouterLink, ChildCard, EmptyState, Loading, IonIcon],
   templateUrl: './children-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
