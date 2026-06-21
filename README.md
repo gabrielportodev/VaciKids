@@ -1,59 +1,151 @@
-# VaciKids
+# VaciKids 💉
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
+Carteirinha de vacinação infantil digital. Uma plataforma para pais e responsáveis acompanharem a jornada de vacinação dos filhos: cadastram as crianças, visualizam o calendário vacinal de cada uma, registram as vacinas aplicadas, consultam o histórico e ficam por dentro das campanhas de vacinação ativas.
 
-## Development server
+A aplicação calcula automaticamente a **situação vacinal** de cada criança a partir da data de nascimento e do calendário de vacinas do SUS, sinalizando o que está **em dia**, **pendente** ou **atrasado**.
 
-To start a local development server, run:
+## ✨ Funcionalidades
 
-```bash
-ng serve
-```
+- **Dashboard** — resumo geral da família, alertas de vacinas atrasadas e campanhas ativas.
+- **Crianças** — lista de filhos com indicador visual da situação de cada um, perfil individual com calendário vacinal completo e formulário de cadastro/edição.
+- **Vacinas** — informações detalhadas de cada vacina e do calendário recomendado por faixa etária.
+- **Histórico vacinal** — registro de todas as aplicações.
+- **Campanhas** — campanhas de vacinação ativas para o público infantil.
+- **Múltiplos filhos** — cada criança tem perfil próprio, sem misturar históricos.
+- **Responsivo** — desktop, tablet e mobile.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠 Stack
 
-## Code scaffolding
+- **Angular 22** — standalone components, signals, lazy loading por feature.
+- **Ionic Framework v8** (`@ionic/angular/standalone`) — componentes de UI.
+- **Tailwind CSS v4** — espaçamento e layout.
+- **RxJS / Signals** — estado reativo nos services.
+- **Firebase / Firestore** — fonte de dados (com seed automático de dados de exemplo).
+- **Vitest** — testes unitários.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📋 Pré-requisitos
 
-```bash
-ng generate component component-name
-```
+- **Node.js** 20+ (recomendado 22 ou superior)
+- **npm** 10+
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Como rodar
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 1. Clonar o repositório
 
 ```bash
-ng test
+git clone https://github.com/gabrielportodev/VaciKids.git
+cd VaciKids
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### 2. Instalar as dependências
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 3. Configurar as variáveis de ambiente
 
-## Additional Resources
+As configurações de ambiente ficam em [`src/environments/`](src/environments/):
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Arquivo                      | Quando é usado                             |
+| ---------------------------- | ------------------------------------------ |
+| `environment.ts`             | Base / `ng serve` padrão                   |
+| `environment.development.ts` | Build de desenvolvimento (`npm run watch`) |
+| `environment.prod.ts`        | Build de produção (`npm run build`)        |
+
+Preencha as credenciais do seu projeto Firebase. Cada arquivo segue o formato:
+
+```ts
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: 'SUA_API_KEY',
+    authDomain: 'SEU_PROJETO.firebaseapp.com',
+    projectId: 'SEU_PROJECT_ID',
+    storageBucket: 'SEU_PROJETO.firebasestorage.app',
+    messagingSenderId: 'SEU_SENDER_ID',
+    appId: 'SEU_APP_ID',
+    measurementId: 'SEU_MEASUREMENT_ID',
+  },
+  seedOnStart: true,
+};
+```
+
+Esses valores estão no **Console do Firebase → Configurações do projeto → Seus apps → SDK do Firebase**.
+
+> **`seedOnStart`** — quando `true`, na primeira execução a aplicação popula automaticamente o Firestore com dados de exemplo (crianças, registros de vacinação e campanhas) caso as coleções estejam vazias. Se as credenciais ainda forem os valores de placeholder, o seed é ignorado com segurança.
+
+### 4. Iniciar o servidor de desenvolvimento
+
+```bash
+npm start
+```
+
+A aplicação fica disponível em **http://localhost:4200**.
+
+## 📜 Scripts disponíveis
+
+```bash
+npm start        # ng serve — servidor de desenvolvimento
+npm run build    # build de produção (usa environment.prod.ts)
+npm run watch    # build contínuo de desenvolvimento
+npm test         # testes unitários (Vitest)
+npm run lint     # análise estática (ESLint)
+npm run format   # formatação (Prettier)
+```
+
+## 🗂 Arquitetura de pastas
+
+Organização por **features** com lazy loading, separando lógica de negócio (`core`), reúso (`shared`) e telas (`features`).
+
+```
+src/
+├── app/
+│   ├── core/                      # lógica de negócio e funções puras
+│   │   ├── services/              # CRUD, cálculos — singletons (providedIn: 'root')
+│   │   │   ├── child.service.ts               # CRUD de crianças
+│   │   │   ├── vaccine.service.ts             # vacinas e calendário vacinal
+│   │   │   ├── vaccination-record.service.ts  # registros + cálculo de status
+│   │   │   ├── campaign.service.ts            # campanhas ativas
+│   │   │   ├── notification.service.ts        # toasts / feedback ao usuário
+│   │   │   └── firestore-seeder.ts            # popula o Firestore na 1ª execução
+│   │   ├── utils/                 # funções puras e testáveis (sem Angular)
+│   │   │   ├── age.util.ts        # idade em meses a partir da data de nascimento
+│   │   │   ├── status.util.ts     # em dia / pendente / atrasada
+│   │   │   ├── date.util.ts       # helpers de data
+│   │   │   └── name.util.ts       # helpers de nome
+│   │   └── firestore.ts           # provider do Firestore + collectionSignal
+│   │
+│   ├── shared/                    # reúso entre features
+│   │   ├── models/                # interfaces (Child, Vaccine, Campaign, ...)
+│   │   ├── components/            # componentes de apresentação reutilizáveis
+│   │   │   ├── status-badge/      # badge de situação vacinal
+│   │   │   ├── child-card/
+│   │   │   ├── vaccine-card/
+│   │   │   ├── campaign-card/
+│   │   │   ├── detail-header/
+│   │   │   ├── empty-state/
+│   │   │   └── loading/
+│   │   ├── pipes/                 # age.pipe, date-format.pipe
+│   │   └── constants/             # calendário vacinal do SUS + dados de seed
+│   │
+│   ├── features/                  # telas roteadas, carregadas por lazy loading
+│   │   ├── dashboard/             # resumo, alertas e campanhas
+│   │   ├── children/              # lista, perfil, formulário + components internos
+│   │   ├── vaccines/              # lista e detalhes de vacina
+│   │   ├── vaccination-history/   # histórico de aplicações
+│   │   └── campaigns/             # lista e detalhes de campanha
+│   │
+│   ├── app.routes.ts              # rotas raiz com loadChildren por feature
+│   └── app.config.ts              # providers da aplicação
+│
+└── environments/                  # environment.ts / .development.ts / .prod.ts
+```
+
+### Responsabilidade de cada camada
+
+- **core/services** — concentram toda a regra de negócio. Os componentes não calculam status nem filtram dados; pedem aos services.
+- **core/utils** — funções puras (cálculo de idade, derivação de status), testáveis isoladamente.
+- **shared/models** — contratos de dados em inglês (`Child`, `Vaccine`, `VaccinationRecord`, `Campaign`, `VaccinationStatus`).
+- **shared/components** — componentes de apresentação "burros" (recebem via `input()`, emitem via `output()`).
+- **features** — telas independentes, cada uma com seu próprio arquivo de rotas e lazy loading.
