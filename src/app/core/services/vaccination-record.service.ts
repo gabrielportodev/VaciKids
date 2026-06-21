@@ -1,21 +1,23 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
-import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
-import { MOCK_RECORDS } from 'src/app/shared/constants/mock-records.constant';
 import { ChildSummary } from 'src/app/shared/models/child-summary.model';
 import { resolveStatus } from 'src/app/core/utils/status.util';
 import { toIsoDate, today } from 'src/app/core/utils/date.util';
+import { FIRESTORE, collectionSignal, stripUndefined } from 'src/app/core/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class VaccinationRecordService {
-  private readonly records = signal<VaccinationRecord[]>(
-    MOCK_RECORDS.map((record) => this.withResolvedStatus(record)),
-  );
+  private readonly db = inject(FIRESTORE);
+  private readonly col = collection(this.db, 'vaccination-records');
 
-  readonly all = this.records.asReadonly();
+  private readonly raw = collectionSignal<VaccinationRecord>(this.col);
+  readonly all = computed(() => this.raw().map((record) => this.withResolvedStatus(record)));
+
+  readonly loading = this.raw.loading;
 
   byChild(childId: string): VaccinationRecord[] {
-    return this.records().filter((record) => record.childId === childId);
+    return this.all().filter((record) => record.childId === childId);
   }
 
   overdueByChild(childId: string): VaccinationRecord[] {
@@ -42,40 +44,27 @@ export class VaccinationRecordService {
     };
   }
 
-  markApplied(recordId: string, applicationDate: string = toIsoDate(today())): void {
-    this.records.update((list) =>
-      list.map((record) =>
-        record.id === recordId ? this.withResolvedStatus({ ...record, applicationDate }) : record,
-      ),
-    );
+  async markApplied(recordId: string, applicationDate: string = toIsoDate(today())): Promise<void> {
+    await updateDoc(doc(this.col, recordId), { applicationDate });
   }
 
-  registerApplication(
+  async registerApplication(
     recordId: string,
     data: { applicationDate: string; healthUnit?: string; batch?: string },
-  ): void {
-    this.records.update((list) =>
-      list.map((record) =>
-        record.id === recordId
-          ? this.withResolvedStatus({
-              ...record,
-              applicationDate: data.applicationDate,
-              healthUnit: data.healthUnit || record.healthUnit,
-              notes: data.batch ? `Lote: ${data.batch}` : record.notes,
-            })
-          : record,
-      ),
+  ): Promise<void> {
+    await updateDoc(
+      doc(this.col, recordId),
+      stripUndefined({
+        applicationDate: data.applicationDate,
+        healthUnit: data.healthUnit,
+        notes: data.batch ? `Lote: ${data.batch}` : undefined,
+      }),
     );
   }
 
-  add(record: Omit<VaccinationRecord, 'id' | 'status'>): VaccinationRecord {
-    const created = this.withResolvedStatus({
-      ...record,
-      id: `rec-${crypto.randomUUID()}`,
-      status: 'pending' as VaccinationStatus,
-    });
-    this.records.update((list) => [...list, created]);
-    return created;
+  async add(record: Omit<VaccinationRecord, 'id' | 'status'>): Promise<VaccinationRecord> {
+    const ref = await addDoc(this.col, stripUndefined(record));
+    return this.withResolvedStatus({ ...record, id: ref.id } as VaccinationRecord);
   }
 
   private withResolvedStatus(record: VaccinationRecord): VaccinationRecord {
