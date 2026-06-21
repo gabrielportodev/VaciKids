@@ -1,0 +1,18 @@
+@if (inline()) {
+  <span class="inline-flex items-center justify-center gap-2" role="status" aria-live="polite">
+    <ion-spinner name="crescent" class="h-5 w-5" aria-hidden="true" />
+    @if (label()) {
+      <span>{{ label() }}</span>
+    }
+    <span class="sr-only">Carregando</span>
+  </span>
+} @else {
+  <div
+    class="flex flex-col items-center justify-center gap-3 py-12 text-center text-brand-green"
+    role="status"
+    aria-live="polite"
+  >
+    <ion-spinner name="crescent" class="h-9 w-9" aria-hidden="true" />
+    <p class="text-sm font-semibold text-muted">{{ label() || 'Carregando…' }}</p>
+  </div>
+}
