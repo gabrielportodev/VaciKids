@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 
-/* Apenas o core do Ionic (tokens/variáveis). Não importamos typography/normalize/etc.
-   porque eles sobrescrevem títulos, fontes e espaçamentos do nosso design Tailwind. */
 @import '@ionic/angular/css/core.css';
 
 @theme {
@@ -48,6 +46,19 @@ body {
 a,
 button {
   -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a[role='button'],
+[role='button'],
+ion-item[button],
+ion-card[button] {
+  cursor: pointer;
+}
+
+button:disabled,
+button[disabled] {
+  cursor: not-allowed;
 }
 
 .no-scrollbar {
@@ -107,7 +118,6 @@ button {
   }
 }
 
-/* Cores customizadas do Ionic (paleta obrigatória do desafio) — uso via color="brand-green" etc. */
 :root {
   --ion-color-brand-green: #abc270;
   --ion-color-brand-green-rgb: 171, 194, 112;
@@ -180,20 +190,10 @@ button {
   --ion-font-family: var(--font-sans);
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Neutralizador do Ionic
-   Removemos o "chrome" padrão dos componentes Ionic (fundos, paddings, sombras,
-   bordas, ripple, uppercase) para que as classes utilitárias do Tailwind nos
-   templates controlem 100% da aparência — mantendo o mesmo visual de antes.
-   ────────────────────────────────────────────────────────────────────────── */
-
-/* ion-app não deve criar contexto de layout próprio (fixed/contain): mantemos o
-   fluxo normal do documento usado pelo nosso layout com sidebar sticky. */
 ion-app {
   display: contents;
 }
 
-/* Cards = apenas um contêiner; o visual vem das classes Tailwind no host. */
 ion-card {
   margin: 0;
   border-radius: 0;
@@ -210,8 +210,6 @@ ion-card-content {
   line-height: inherit;
 }
 
-/* Itens de lista = linha transparente; usamos um <div> interno com as classes
-   originais. Zeramos paddings, bordas, alturas mínimas e estados de toque. */
 ion-list {
   background: transparent;
   padding: 0;
@@ -235,17 +233,20 @@ ion-item {
   --color: inherit;
   font-size: inherit;
   overflow: visible;
+  min-width: 0;
 }
+
 ion-item::part(native) {
   padding: 0;
   min-height: 0;
-}
-/* O conteúdo (div interno) ocupa a largura toda da linha. */
-ion-item .vk-row {
-  width: 100%;
+  min-width: 0;
 }
 
-/* Badge = pílula controlada por Tailwind (sem fundo/upper/padding do Ionic). */
+ion-item .vk-row {
+  width: 100%;
+  min-width: 0;
+}
+
 ion-badge {
   --background: transparent;
   --padding-top: 0;
@@ -262,7 +263,6 @@ ion-badge {
   vertical-align: baseline;
 }
 
-/* Botões: sem uppercase, com cantos/altura definidos pelas classes Tailwind. */
 ion-button {
   --box-shadow: none;
   --ripple-color: transparent;
