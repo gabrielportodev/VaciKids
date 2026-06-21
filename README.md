@@ -4,6 +4,16 @@ Carteirinha de vacinação infantil digital. Uma plataforma para pais e respons�
 
 A aplicação calcula automaticamente a **situação vacinal** de cada criança a partir da data de nascimento e do calendário de vacinas do SUS, sinalizando o que está **em dia**, **pendente** ou **atrasado**.
 
+## 📸 Screenshots
+
+| Dashboard                           | Perfil da criança                                  |
+| ----------------------------------- | -------------------------------------------------- |
+| ![Dashboard](/public/dashboard.png) | ![Perfil da Criança](/public/detalhes-crianca.png) |
+
+| Lista de Vacinas                | Campanhas                           |
+| ------------------------------- | ----------------------------------- |
+| ![Vacinas](/public/vacinas.png) | ![Campanhas](/public/campanhas.png) |
+
 ## ✨ Funcionalidades
 
 - **Dashboard** — resumo geral da família, alertas de vacinas atrasadas e campanhas ativas.
@@ -71,10 +81,6 @@ export const environment = {
 };
 ```
 
-Esses valores estão no **Console do Firebase → Configurações do projeto → Seus apps → SDK do Firebase**.
-
-> **`seedOnStart`** — quando `true`, na primeira execução a aplicação popula automaticamente o Firestore com dados de exemplo (crianças, registros de vacinação e campanhas) caso as coleções estejam vazias. Se as credenciais ainda forem os valores de placeholder, o seed é ignorado com segurança.
-
 ### 4. Iniciar o servidor de desenvolvimento
 
 ```bash
@@ -111,9 +117,12 @@ src/
 │   │   │   └── firestore-seeder.ts            # popula o Firestore na 1ª execução
 │   │   ├── utils/                 # funções puras e testáveis (sem Angular)
 │   │   │   ├── age.util.ts        # idade em meses a partir da data de nascimento
-│   │   │   ├── status.util.ts     # em dia / pendente / atrasada
+│   │   │   ├── status.util.ts     # em dia / pendente / atrasada + agregação de status
+│   │   │   ├── summary.util.ts    # resumo vacinal de uma criança (contagens e %)
+│   │   │   ├── campaign.util.ts   # campanha ativa para uma data de referência
 │   │   │   ├── date.util.ts       # helpers de data
-│   │   │   └── name.util.ts       # helpers de nome
+│   │   │   ├── name.util.ts       # helpers de nome
+│   │   │   └── index.ts           # barrel das funções puras
 │   │   └── firestore.ts           # provider do Firestore + collectionSignal
 │   │
 │   ├── shared/                    # reúso entre features
@@ -126,8 +135,8 @@ src/
 │   │   │   ├── detail-header/
 │   │   │   ├── empty-state/
 │   │   │   └── loading/
-│   │   ├── pipes/                 # age.pipe, date-format.pipe
-│   │   └── constants/             # calendário vacinal do SUS + dados de seed
+│   │   ├── pipes/                 # age.pipe, date-format.pipe, vaccine-name.pipe
+│   │   └── constants/             # calendário vacinal do SUS, filtros de idade + dados de seed
 │   │
 │   ├── features/                  # telas roteadas, carregadas por lazy loading
 │   │   ├── dashboard/             # resumo, alertas e campanhas
