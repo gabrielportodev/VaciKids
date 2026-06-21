@@ -5,7 +5,12 @@ import { CampaignService } from 'src/app/core/services/campaign.service';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
-import { getAgeInMonths, campaignAudienceLabel, aggregateStatus } from 'src/app/core/utils';
+import {
+  getAgeInMonths,
+  campaignAudienceLabel,
+  aggregateStatus,
+  isCampaignActive,
+} from 'src/app/core/utils';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
 import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
@@ -37,6 +42,11 @@ export class CampaignDetail {
   readonly id = input.required<string>();
   readonly campaign = computed(() => this.campaignService.getById(this.id()));
   readonly loading = this.campaignService.all.loading;
+
+  readonly isActive = computed(() => {
+    const c = this.campaign();
+    return c ? isCampaignActive(c) : false;
+  });
 
   readonly audience = computed(() => {
     const c = this.campaign();

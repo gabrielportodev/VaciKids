@@ -7,6 +7,7 @@ import {
   timeOutline,
   addOutline,
   checkmarkCircleOutline,
+  closeCircleOutline,
   calendarOutline,
   warningOutline,
   chevronForwardOutline,
@@ -36,6 +37,7 @@ export type IconName =
   | 'history'
   | 'plus'
   | 'check-circle'
+  | 'x-circle'
   | 'calendar-clock'
   | 'alert-triangle'
   | 'chevron-right'
@@ -66,6 +68,7 @@ export function registerAppIcons(): void {
     history: timeOutline,
     plus: addOutline,
     'check-circle': checkmarkCircleOutline,
+    'x-circle': closeCircleOutline,
     'calendar-clock': calendarOutline,
     'alert-triangle': warningOutline,
     'chevron-right': chevronForwardOutline,
