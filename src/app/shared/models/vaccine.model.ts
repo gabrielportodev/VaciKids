@@ -3,5 +3,6 @@ export interface Vaccine {
   name: string;
   description: string;
   recommendedAgeInMonths: number;
+  recommendedAgesInMonths: number[];
   totalDoses: number;
 }
