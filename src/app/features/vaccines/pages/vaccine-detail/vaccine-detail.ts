@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { IonIcon, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
-import { ageGroupLabel } from 'src/app/core/utils/age.util';
+import { ageGroupLabel } from 'src/app/core/utils';
 
 const ADMINISTRATION_ROUTE: Record<string, string> = {
   bcg: 'Intradérmica',
@@ -29,7 +29,7 @@ export class VaccineDetail {
   readonly vaccine = computed(() => this.vaccineService.getById(this.id()));
   readonly ageLabel = computed(() => {
     const v = this.vaccine();
-    return v ? ageGroupLabel(v.recommendedAgeInMonths) : '';
+    return v ? ageGroupLabel(v.recommendedAgesInMonths[0]) : '';
   });
   readonly route = computed(() => ADMINISTRATION_ROUTE[this.id()] ?? 'Intramuscular');
 }

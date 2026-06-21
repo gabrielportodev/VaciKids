@@ -26,7 +26,7 @@
                   </span>
                   <div class="min-w-0 flex-1">
                     <strong class="mb-0.5 block min-w-0 line-clamp-2 leading-5 text-brand-brown">
-                      {{ vaccineName(record.vaccineId) }}
+                      {{ record.vaccineId | vaccineName }}
                       <span class="font-normal text-muted">· {{ record.dose }}ª dose</span>
                     </strong>
                     <p class="min-w-0 line-clamp-2 text-xs leading-5 text-muted">

@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { IonIcon, IonItem } from '@ionic/angular/standalone';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
-import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 import { Loading } from 'src/app/shared/components/loading/loading';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
+import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
 
 interface HistoryGroup {
   childId: string;
@@ -16,14 +16,13 @@ interface HistoryGroup {
 
 @Component({
   selector: 'app-history-page',
-  imports: [IonItem, EmptyState, Loading, IonIcon, DateFormatPipe],
+  imports: [IonItem, EmptyState, Loading, IonIcon, DateFormatPipe, VaccineNamePipe],
   templateUrl: './history-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryPage {
   private readonly childService = inject(ChildService);
   private readonly recordService = inject(VaccinationRecordService);
-  private readonly vaccineService = inject(VaccineService);
 
   readonly loading = this.recordService.loading;
 
@@ -46,8 +45,4 @@ export class HistoryPage {
     }
     return [...map.values()];
   });
-
-  vaccineName(vaccineId: string): string {
-    return this.vaccineService.getById(vaccineId)?.name ?? vaccineId;
-  }
 }

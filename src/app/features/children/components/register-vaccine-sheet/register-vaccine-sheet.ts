@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
-import { toIsoDate, today } from 'src/app/core/utils/date.util';
+import { toIsoDate, today } from 'src/app/core/utils';
 import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 

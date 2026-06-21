@@ -4,7 +4,7 @@ import { IonIcon, IonAvatar, IonCard, IonCardContent } from '@ionic/angular/stan
 import { Child } from 'src/app/shared/models/child.model';
 import { ChildSummary } from 'src/app/shared/models/child-summary.model';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
-import { getInitials } from 'src/app/core/utils/name.util';
+import { getInitials } from 'src/app/core/utils';
 
 @Component({
   selector: 'app-child-card',
@@ -14,14 +14,7 @@ import { getInitials } from 'src/app/core/utils/name.util';
 })
 export class ChildCard {
   readonly child = input.required<Child>();
-  readonly summary = input<ChildSummary>({
-    applied: 0,
-    pending: 0,
-    overdue: 0,
-    total: 0,
-    appliedPercent: 0,
-    overduePercent: 0,
-  });
+  readonly summary = input.required<ChildSummary>();
 
   readonly initials = computed(() => getInitials(this.child().name));
 }

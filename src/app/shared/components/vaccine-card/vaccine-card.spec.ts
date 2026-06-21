@@ -7,7 +7,6 @@ const vaccine: Vaccine = {
   id: 'v1',
   name: 'Tríplice Viral',
   description: 'Protege contra sarampo, caxumba e rubéola.',
-  recommendedAgeInMonths: 12,
   recommendedAgesInMonths: [12, 15],
   totalDoses: 2,
 };

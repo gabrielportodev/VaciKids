@@ -73,7 +73,7 @@
   @if (selectedRecord(); as record) {
     <app-register-vaccine-sheet
       [record]="record"
-      [vaccineName]="vaccineName(record.vaccineId)"
+      [vaccineName]="record.vaccineId | vaccineName"
       [busy]="registering()"
       (confirmed)="confirmRegister($event)"
       (cancelled)="closeSheet()"

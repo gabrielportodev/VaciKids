@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatAge } from 'src/app/core/utils/age.util';
+import { formatAge } from 'src/app/core/utils';
 
 @Pipe({ name: 'age' })
 export class AgePipe implements PipeTransform {

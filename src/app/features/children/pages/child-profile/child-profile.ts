@@ -3,13 +3,13 @@ import { RouterLink } from '@angular/router';
 import { IonIcon, IonAvatar, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { ChildService } from 'src/app/core/services/child.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
-import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
+import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
 import { Loading } from 'src/app/shared/components/loading/loading';
-import { getInitials } from 'src/app/core/utils/name.util';
+import { getInitials } from 'src/app/core/utils';
 import { VaccineTimeline } from 'src/app/features/children/components/vaccine-timeline/vaccine-timeline';
 import {
   RegisterData,
@@ -24,6 +24,7 @@ import {
     IonCardContent,
     IonAvatar,
     AgePipe,
+    VaccineNamePipe,
     DetailHeader,
     Loading,
     IonIcon,
@@ -37,7 +38,6 @@ export class ChildProfile {
   private readonly childService = inject(ChildService);
   private readonly recordService = inject(VaccinationRecordService);
   private readonly notifications = inject(NotificationService);
-  private readonly vaccineService = inject(VaccineService);
 
   readonly id = input.required<string>();
 
@@ -53,10 +53,6 @@ export class ChildProfile {
   readonly registering = signal(false);
 
   readonly initials = computed(() => getInitials(this.child()?.name));
-
-  vaccineName(vaccineId: string): string {
-    return this.vaccineService.getById(vaccineId)?.name ?? vaccineId;
-  }
 
   openRegister(record: VaccinationRecord): void {
     this.selectedRecord.set(record);

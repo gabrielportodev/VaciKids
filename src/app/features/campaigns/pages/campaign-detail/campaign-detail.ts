@@ -3,12 +3,12 @@ import { RouterLink } from '@angular/router';
 import { IonIcon, IonCard, IonCardContent, IonItem } from '@ionic/angular/standalone';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { ChildService } from 'src/app/core/services/child.service';
-import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { VaccinationRecordService } from 'src/app/core/services/vaccination-record.service';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
-import { getAgeInMonths, campaignAudienceLabel } from 'src/app/core/utils/age.util';
+import { getAgeInMonths, campaignAudienceLabel, aggregateStatus } from 'src/app/core/utils';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { AgePipe } from 'src/app/shared/pipes/age.pipe';
+import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
 import { StatusBadge } from 'src/app/shared/components/status-badge/status-badge';
 import { Loading } from 'src/app/shared/components/loading/loading';
 
@@ -21,6 +21,7 @@ import { Loading } from 'src/app/shared/components/loading/loading';
     IonItem,
     DateFormatPipe,
     AgePipe,
+    VaccineNamePipe,
     StatusBadge,
     Loading,
     IonIcon,
@@ -31,7 +32,6 @@ import { Loading } from 'src/app/shared/components/loading/loading';
 export class CampaignDetail {
   private readonly campaignService = inject(CampaignService);
   private readonly childService = inject(ChildService);
-  private readonly vaccineService = inject(VaccineService);
   private readonly recordService = inject(VaccinationRecordService);
 
   readonly id = input.required<string>();
@@ -41,11 +41,6 @@ export class CampaignDetail {
   readonly audience = computed(() => {
     const c = this.campaign();
     return c ? campaignAudienceLabel(c.minimumAgeInMonths, c.maximumAgeInMonths) : '';
-  });
-
-  readonly vaccineName = computed(() => {
-    const vaccineId = this.campaign()?.relatedVaccineId;
-    return vaccineId ? (this.vaccineService.getById(vaccineId)?.name ?? vaccineId) : null;
   });
 
   readonly eligible = computed(() => {
@@ -62,9 +57,6 @@ export class CampaignDetail {
 
   private statusFor(childId: string, vaccineId?: string): VaccinationStatus {
     if (!vaccineId) return 'pending';
-    const records = this.recordService.byChildAndVaccine(childId, vaccineId);
-    if (records.some((r) => r.status === 'applied')) return 'applied';
-    if (records.some((r) => r.status === 'overdue')) return 'overdue';
-    return 'pending';
+    return aggregateStatus(this.recordService.byChildAndVaccine(childId, vaccineId));
   }
 }

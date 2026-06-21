@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { parseIsoDate } from 'src/app/core/utils/date.util';
+import { parseIsoDate } from 'src/app/core/utils';
 
 @Pipe({ name: 'dateFormat' })
 export class DateFormatPipe implements PipeTransform {

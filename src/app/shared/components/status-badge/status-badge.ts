@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { IonIcon, IonBadge } from '@ionic/angular/standalone';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
-import { statusVisual } from 'src/app/core/utils/status.util';
+import { statusVisual } from 'src/app/core/utils';
 
 @Component({
   selector: 'app-status-badge',

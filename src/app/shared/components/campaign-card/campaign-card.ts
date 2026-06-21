@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { IonIcon, IonItem } from '@ionic/angular/standalone';
 import { Campaign } from 'src/app/shared/models/campaign.model';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
-import { campaignAudienceLabel } from 'src/app/core/utils/age.util';
+import { campaignAudienceLabel } from 'src/app/core/utils';
 
 @Component({
   selector: 'app-campaign-card',

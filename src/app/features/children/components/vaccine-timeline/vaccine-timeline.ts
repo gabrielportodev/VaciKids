@@ -15,9 +15,8 @@ import { VaccineService } from 'src/app/core/services/vaccine.service';
 import { StatusBadge } from 'src/app/shared/components/status-badge/status-badge';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
-import { ageGroupLabel } from 'src/app/core/utils/age.util';
-import { daysOverdue } from 'src/app/core/utils/date.util';
-import { statusVisual } from 'src/app/core/utils/status.util';
+import { VaccineNamePipe } from 'src/app/shared/pipes/vaccine-name.pipe';
+import { ageGroupLabel, daysOverdue, statusVisual } from 'src/app/core/utils';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
 
 type Filter = 'all' | 'pending' | 'overdue' | 'applied';
@@ -38,6 +37,7 @@ interface TimelineGroup {
     EmptyState,
     IonIcon,
     DateFormatPipe,
+    VaccineNamePipe,
   ],
   templateUrl: './vaccine-timeline.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -88,10 +88,6 @@ export class VaccineTimeline {
 
   setFilter(filter: Filter): void {
     this.filter.set(filter);
-  }
-
-  vaccineName(vaccineId: string): string {
-    return this.vaccineService.getById(vaccineId)?.name ?? vaccineId;
   }
 
   borderClass(status: VaccinationStatus): string {

@@ -1,4 +1,4 @@
-import { resolveStatus, statusVisual } from './status.util';
+import { aggregateStatus, resolveStatus, statusVisual } from './status.util';
 import { VaccinationStatus } from 'src/app/shared/models/vaccination-status.model';
 
 describe('status.util', () => {
@@ -44,5 +44,25 @@ describe('status.util', () => {
         expect(visual.borderClass).toBeTruthy();
       });
     }
+  });
+
+  describe('aggregateStatus', () => {
+    it('should be "pending" for an empty list', () => {
+      expect(aggregateStatus([])).toBe('pending');
+    });
+
+    it('should prioritize "applied" over any other status', () => {
+      expect(
+        aggregateStatus([{ status: 'overdue' }, { status: 'applied' }, { status: 'pending' }]),
+      ).toBe('applied');
+    });
+
+    it('should be "overdue" when none applied but some overdue', () => {
+      expect(aggregateStatus([{ status: 'pending' }, { status: 'overdue' }])).toBe('overdue');
+    });
+
+    it('should be "pending" when only pending records exist', () => {
+      expect(aggregateStatus([{ status: 'pending' }, { status: 'pending' }])).toBe('pending');
+    });
   });
 });

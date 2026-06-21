@@ -4,7 +4,7 @@ import { Vaccine } from 'src/app/shared/models/vaccine.model';
 import { VaccineCard } from 'src/app/shared/components/vaccine-card/vaccine-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 import { IonIcon } from '@ionic/angular/standalone';
-import { ageGroupLabel } from 'src/app/core/utils/age.util';
+import { ageGroupLabel } from 'src/app/core/utils';
 
 interface VaccineGroup {
   label: string;
@@ -61,12 +61,13 @@ export class VaccineList {
       )
       .filter((v) => dose === 'all' || v.totalDoses === Number(dose))
       .filter(
-        (v) => v.recommendedAgeInMonths >= range.min && v.recommendedAgeInMonths <= range.max,
+        (v) =>
+          v.recommendedAgesInMonths[0] >= range.min && v.recommendedAgesInMonths[0] <= range.max,
       );
 
     const map = new Map<number, VaccineGroup>();
     for (const vaccine of filtered) {
-      const age = vaccine.recommendedAgeInMonths;
+      const age = vaccine.recommendedAgesInMonths[0];
       if (!map.has(age)) {
         map.set(age, { label: ageGroupLabel(age), ageMonths: age, vaccines: [] });
       }

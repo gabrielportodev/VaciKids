@@ -1,27 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CampaignService } from 'src/app/core/services/campaign.service';
-import { isPast, parseIsoDate } from 'src/app/core/utils/date.util';
+import { isPast, parseIsoDate } from 'src/app/core/utils';
 import { IonIcon } from '@ionic/angular/standalone';
 import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 import { Loading } from 'src/app/shared/components/loading/loading';
+import { CHILD_AGE_FILTERS } from 'src/app/shared/constants/age-filter.constant';
 
 type Tab = 'active' | 'ended';
-
-interface AgeFilter {
-  value: string;
-  label: string;
-  min: number;
-  max: number;
-}
-
-const AGE_FILTERS: AgeFilter[] = [
-  { value: 'all', label: 'Qualquer idade', min: 0, max: Infinity },
-  { value: 'under1', label: 'Menos de 1 ano', min: 0, max: 11 },
-  { value: '1to2', label: '1 a 2 anos', min: 12, max: 35 },
-  { value: '3to5', label: '3 a 5 anos', min: 36, max: 71 },
-  { value: '6plus', label: '6 anos ou mais', min: 72, max: Infinity },
-];
 
 @Component({
   selector: 'app-campaign-list',
@@ -35,7 +21,7 @@ export class CampaignList {
   readonly campaigns = this.campaignService.all;
   readonly tab = signal<Tab>('active');
 
-  readonly ageFilters = AGE_FILTERS;
+  readonly ageFilters = CHILD_AGE_FILTERS;
   readonly ageFilter = signal<string>('all');
   readonly dateFilter = signal<string>('');
 
@@ -51,11 +37,11 @@ export class CampaignList {
 
   readonly shown = computed(() => {
     const base = this.tab() === 'ended' ? this.ended() : this.ongoing();
-    const age = AGE_FILTERS.find((f) => f.value === this.ageFilter()) ?? AGE_FILTERS[0];
+    const age = CHILD_AGE_FILTERS.find((f) => f.value === this.ageFilter()) ?? CHILD_AGE_FILTERS[0];
     const date = this.dateFilter();
 
     return base
-      .filter((c) => age.min <= c.maximumAgeInMonths && age.max >= c.minimumAgeInMonths)
+      .filter((c) => age.min <= c.maximumAgeInMonths && c.minimumAgeInMonths < age.max)
       .filter((c) => {
         if (!date) {
           return true;

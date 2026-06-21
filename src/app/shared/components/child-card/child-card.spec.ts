@@ -27,12 +27,10 @@ describe('ChildCard', () => {
     }).compileComponents();
   });
 
-  function render(input: Child, childSummary?: ChildSummary) {
+  function render(input: Child, childSummary: ChildSummary = summary) {
     const fixture = TestBed.createComponent(ChildCard);
     fixture.componentRef.setInput('child', input);
-    if (childSummary) {
-      fixture.componentRef.setInput('summary', childSummary);
-    }
+    fixture.componentRef.setInput('summary', childSummary);
     fixture.detectChanges();
     return fixture;
   }

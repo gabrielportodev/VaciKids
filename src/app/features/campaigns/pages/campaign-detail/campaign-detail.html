@@ -41,7 +41,7 @@
           <p class="mt-1 text-xs text-muted">Público-alvo</p>
         </ion-card-content>
       </ion-card>
-      @if (vaccineName()) {
+      @if (campaign.relatedVaccineId) {
         <ion-card
           [routerLink]="['/vaccines', campaign.relatedVaccineId]"
           button
@@ -49,7 +49,9 @@
         >
           <ion-card-content class="p-4">
             <ion-icon name="syringe" style="font-size: 20px" class="text-brand-yellow" />
-            <p class="mt-2 text-sm font-extrabold text-brand-brown">{{ vaccineName() }}</p>
+            <p class="mt-2 text-sm font-extrabold text-brand-brown">
+              {{ campaign.relatedVaccineId | vaccineName }}
+            </p>
             <p class="mt-1 text-xs text-muted">Vacina</p>
           </ion-card-content>
         </ion-card>

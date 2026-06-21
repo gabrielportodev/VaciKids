@@ -14,7 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
 import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
-import { getInitials } from 'src/app/core/utils/name.util';
+import { getInitials } from 'src/app/core/utils';
 
 type Gender = 'male' | 'female';
 

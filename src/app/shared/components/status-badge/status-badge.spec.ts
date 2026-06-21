@@ -18,7 +18,7 @@ describe('StatusBadge', () => {
     expect(render('applied').componentInstance).toBeTruthy();
   });
 
-  const cases: Array<[VaccinationStatus, string]> = [
+  const cases: [VaccinationStatus, string][] = [
     ['applied', 'Em dia'],
     ['pending', 'Próxima'],
     ['overdue', 'Atrasada'],
