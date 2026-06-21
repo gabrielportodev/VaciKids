@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deploy": "ng build && firebase deploy --only hosting"
   },
   "private": true,
   "packageManager": "npm@11.12.1",
