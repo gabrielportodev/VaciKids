@@ -6,6 +6,7 @@ import { IconName } from 'src/app/shared/icons';
   selector: 'app-empty-state',
   imports: [IonCard, IonCardContent, IonIcon],
   templateUrl: './empty-state.html',
+  host: { class: 'block w-full' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmptyState {
