@@ -51,18 +51,18 @@ describe('status.util', () => {
       expect(aggregateStatus([])).toBe('pending');
     });
 
-    it('should prioritize "applied" over any other status', () => {
+    it('should prioritize "overdue" over any other status', () => {
       expect(
-        aggregateStatus([{ status: 'overdue' }, { status: 'applied' }, { status: 'pending' }]),
-      ).toBe('applied');
+        aggregateStatus([{ status: 'applied' }, { status: 'overdue' }, { status: 'pending' }]),
+      ).toBe('overdue');
     });
 
-    it('should be "overdue" when none applied but some overdue', () => {
-      expect(aggregateStatus([{ status: 'pending' }, { status: 'overdue' }])).toBe('overdue');
+    it('should be "pending" when none overdue but some pending', () => {
+      expect(aggregateStatus([{ status: 'applied' }, { status: 'pending' }])).toBe('pending');
     });
 
-    it('should be "pending" when only pending records exist', () => {
-      expect(aggregateStatus([{ status: 'pending' }, { status: 'pending' }])).toBe('pending');
+    it('should be "applied" only when every record is applied', () => {
+      expect(aggregateStatus([{ status: 'applied' }, { status: 'applied' }])).toBe('applied');
     });
   });
 });

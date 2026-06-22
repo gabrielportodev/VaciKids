@@ -49,11 +49,11 @@ export function statusVisual(status: VaccinationStatus): StatusVisual {
 }
 
 export function aggregateStatus(records: { status: VaccinationStatus }[]): VaccinationStatus {
-  if (records.some((record) => record.status === 'applied')) {
-    return 'applied';
-  }
   if (records.some((record) => record.status === 'overdue')) {
     return 'overdue';
   }
-  return 'pending';
+  if (records.some((record) => record.status === 'pending')) {
+    return 'pending';
+  }
+  return records.length ? 'applied' : 'pending';
 }
