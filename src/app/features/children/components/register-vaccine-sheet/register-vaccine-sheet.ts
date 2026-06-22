@@ -9,6 +9,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VaccinationRecord } from 'src/app/shared/models/vaccination-record.model';
 import { toIsoDate, today } from 'src/app/core/utils';
+import { notFutureDate } from 'src/app/shared/validators/not-future-date.validator';
 import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
 
@@ -34,8 +35,10 @@ export class RegisterVaccineSheet {
   readonly confirmed = output<RegisterData>();
   readonly cancelled = output<void>();
 
+  readonly maxDate = toIsoDate(today());
+
   readonly form = this.fb.nonNullable.group({
-    applicationDate: [toIsoDate(today()), Validators.required],
+    applicationDate: [this.maxDate, [Validators.required, notFutureDate]],
     healthUnit: [''],
     batch: [''],
   });

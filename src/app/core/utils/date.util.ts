@@ -19,6 +19,10 @@ export function isPast(iso: string): boolean {
   return parseIsoDate(iso).getTime() < today().getTime();
 }
 
+export function isFuture(iso: string): boolean {
+  return parseIsoDate(iso).getTime() > today().getTime();
+}
+
 export function addMonths(iso: string, months: number): string {
   const date = parseIsoDate(iso);
   date.setMonth(date.getMonth() + months);

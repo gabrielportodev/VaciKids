@@ -14,7 +14,8 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { DetailHeader } from 'src/app/shared/components/detail-header/detail-header';
 import { Loading } from 'src/app/shared/components/loading/loading';
 import { IonIcon } from '@ionic/angular/standalone';
-import { getInitials } from 'src/app/core/utils';
+import { getInitials, toIsoDate, today } from 'src/app/core/utils';
+import { notFutureDate } from 'src/app/shared/validators/not-future-date.validator';
 
 type Gender = 'male' | 'female';
 
@@ -35,6 +36,8 @@ export class ChildForm {
   readonly id = input<string>();
   readonly isEdit = computed(() => !!this.id());
 
+  readonly maxDate = toIsoDate(today());
+
   readonly photoPreview = signal<string | null>(null);
 
   readonly submitting = signal(false);
@@ -42,7 +45,7 @@ export class ChildForm {
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    birthDate: ['', Validators.required],
+    birthDate: ['', [Validators.required, notFutureDate]],
     gender: ['female' as Gender],
     photoUrl: [''],
   });
