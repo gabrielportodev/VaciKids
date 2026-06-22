@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ChildService } from 'src/app/core/services/child.service';
 import { CampaignService } from 'src/app/core/services/campaign.service';
@@ -23,8 +23,10 @@ export class DashboardPage {
   private readonly recordService = inject(VaccinationRecordService);
   private readonly vaccineService = inject(VaccineService);
 
+  private readonly overduePageSize = 4;
+
   readonly children = this.childService.all;
-  readonly activeCampaigns = computed(() => this.campaignService.active());
+  readonly activeCampaigns = computed(() => this.campaignService.active().slice(0, 4));
 
   readonly loading = computed(
     () =>
@@ -51,4 +53,18 @@ export class DashboardPage {
       })),
     ),
   );
+
+  readonly overdueVisibleCount = signal(this.overduePageSize);
+
+  readonly visibleOverdueAlerts = computed(() =>
+    this.overdueAlerts().slice(0, this.overdueVisibleCount()),
+  );
+
+  readonly hasMoreOverdue = computed(
+    () => this.overdueVisibleCount() < this.overdueAlerts().length,
+  );
+
+  showMoreOverdue(): void {
+    this.overdueVisibleCount.update((count) => count + this.overduePageSize);
+  }
 }
