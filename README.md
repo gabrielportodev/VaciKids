@@ -1,10 +1,10 @@
 # VaciKids 💉
 
+**Aplicação no ar: [vacikids.web.app](https://vacikids.web.app)**
+
 Carteirinha de vacinação infantil digital. Uma plataforma para pais e responsáveis acompanharem a jornada de vacinação dos filhos: cadastram as crianças, visualizam o calendário vacinal de cada uma, registram as vacinas aplicadas, consultam o histórico e ficam por dentro das campanhas de vacinação ativas.
 
-A aplicação calcula automaticamente a **situação vacinal** de cada criança a partir da data de nascimento e do calendário de vacinas do SUS, sinalizando o que está **em dia**, **pendente** ou **atrasado**.
-
-## 📸 Screenshots
+## Screenshots
 
 | Dashboard                           | Perfil da criança                                  |
 | ----------------------------------- | -------------------------------------------------- |
@@ -14,7 +14,7 @@ A aplicação calcula automaticamente a **situação vacinal** de cada criança 
 | ------------------------------- | ----------------------------------- |
 | ![Vacinas](/public/vacinas.png) | ![Campanhas](/public/campanhas.png) |
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - **Dashboard** — resumo geral da família, alertas de vacinas atrasadas e campanhas ativas.
 - **Crianças** — lista de filhos com indicador visual da situação de cada um, perfil individual com calendário vacinal completo e formulário de cadastro/edição.
@@ -24,7 +24,7 @@ A aplicação calcula automaticamente a **situação vacinal** de cada criança 
 - **Múltiplos filhos** — cada criança tem perfil próprio, sem misturar históricos.
 - **Responsivo** — desktop, tablet e mobile.
 
-## 🛠 Stack
+## Stack
 
 - **Angular 22** — standalone components, signals, lazy loading por feature.
 - **Ionic Framework v8** (`@ionic/angular/standalone`) — componentes de UI.
@@ -33,12 +33,12 @@ A aplicação calcula automaticamente a **situação vacinal** de cada criança 
 - **Firebase / Firestore** — fonte de dados (com seed automático de dados de exemplo).
 - **Vitest** — testes unitários.
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 - **Node.js** 20+ (recomendado 22 ou superior)
 - **npm** 10+
 
-## 🚀 Como rodar
+## Como rodar
 
 ### 1. Clonar o repositório
 
@@ -89,7 +89,7 @@ npm start
 
 A aplicação fica disponível em **http://localhost:4200**.
 
-## 📜 Scripts disponíveis
+## Scripts disponíveis
 
 ```bash
 npm start        # ng serve — servidor de desenvolvimento
@@ -100,7 +100,7 @@ npm run lint     # análise estática (ESLint)
 npm run format   # formatação (Prettier)
 ```
 
-## 🗂 Arquitetura de pastas
+## Arquitetura de pastas
 
 Organização por **features** com lazy loading, separando lógica de negócio (`core`), reúso (`shared`) e telas (`features`).
 
