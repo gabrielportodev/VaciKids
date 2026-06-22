@@ -118,7 +118,7 @@ export class ChildForm {
 
   async remove(): Promise<void> {
     if (!this.isEdit()) return;
-    if (!confirm('Tem certeza que deseja excluir esta criança?')) return;
+    if (!(await this.notifications.confirm('Tem certeza que deseja excluir esta criança?'))) return;
     this.deleting.set(true);
     try {
       await this.childService.remove(this.id()!);
