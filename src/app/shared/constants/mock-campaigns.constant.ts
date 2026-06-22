@@ -79,8 +79,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
   {
     id: 'campaign-8',
     title: 'Campanha de Vacinação contra a Varicela',
-    description:
-      'Campanha encerrada de imunização contra a catapora para crianças de 1 a 4 anos.',
+    description: 'Campanha encerrada de imunização contra a catapora para crianças de 1 a 4 anos.',
     startDate: '2026-02-01',
     endDate: '2026-03-31',
     minimumAgeInMonths: 12,

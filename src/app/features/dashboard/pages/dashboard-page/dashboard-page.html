@@ -48,7 +48,7 @@
         </div>
         <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
           @for (campaign of activeCampaigns(); track campaign.id) {
-            <app-campaign-card class="block w-full min-w-0" [campaign]="campaign" [active]="true" />
+            <app-campaign-card class="block w-full min-w-0" [campaign]="campaign" state="active" />
           }
         </div>
       </div>

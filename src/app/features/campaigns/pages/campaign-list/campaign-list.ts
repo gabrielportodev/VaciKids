@@ -1,13 +1,19 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Signal,
+  signal,
+} from '@angular/core';
 import { CampaignService } from 'src/app/core/services/campaign.service';
-import { isPast, parseIsoDate } from 'src/app/core/utils';
+import { Campaign } from 'src/app/shared/models/campaign.model';
+import { isCampaignActive, isFuture, isPast, parseIsoDate } from 'src/app/core/utils';
 import { IonIcon } from '@ionic/angular/standalone';
-import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
+import { CampaignCard, CampaignState } from 'src/app/shared/components/campaign-card/campaign-card';
 import { EmptyState } from 'src/app/shared/components/empty-state/empty-state';
 import { Loading } from 'src/app/shared/components/loading/loading';
-import { CHILD_AGE_FILTERS } from 'src/app/shared/constants/age-filter.constant';
-
-type Tab = 'active' | 'ended';
+import { AgeFilter, CHILD_AGE_FILTERS } from 'src/app/shared/constants/age-filter.constant';
 
 @Component({
   selector: 'app-campaign-list',
@@ -19,42 +25,39 @@ export class CampaignList {
   private readonly campaignService = inject(CampaignService);
 
   readonly campaigns = this.campaignService.all;
-  readonly tab = signal<Tab>('active');
+  readonly tab = signal<CampaignState>('active');
 
   readonly ageFilters = CHILD_AGE_FILTERS;
   readonly ageFilter = signal<string>('all');
   readonly dateFilter = signal<string>('');
 
-  private readonly ongoing = computed(() => this.campaigns().filter((c) => !isPast(c.endDate)));
+  private readonly active = computed(() => this.campaigns().filter((c) => isCampaignActive(c)));
+  private readonly upcoming = computed(() => this.campaigns().filter((c) => isFuture(c.startDate)));
   private readonly ended = computed(() => this.campaigns().filter((c) => isPast(c.endDate)));
 
+  private readonly byTab: Record<CampaignState, Signal<Campaign[]>> = {
+    active: this.active,
+    upcoming: this.upcoming,
+    ended: this.ended,
+  };
+
   readonly counts = computed(() => ({
-    active: this.ongoing().length,
+    active: this.active().length,
+    upcoming: this.upcoming().length,
     ended: this.ended().length,
   }));
 
   readonly hasFilters = computed(() => this.ageFilter() !== 'all' || this.dateFilter() !== '');
 
   readonly shown = computed(() => {
-    const base = this.tab() === 'ended' ? this.ended() : this.ongoing();
-    const age = CHILD_AGE_FILTERS.find((f) => f.value === this.ageFilter()) ?? CHILD_AGE_FILTERS[0];
+    const ageRange = this.selectedAgeRange();
     const date = this.dateFilter();
-
-    return base
-      .filter((c) => age.min <= c.maximumAgeInMonths && c.minimumAgeInMonths < age.max)
-      .filter((c) => {
-        if (!date) {
-          return true;
-        }
-        const chosen = parseIsoDate(date).getTime();
-        return (
-          chosen >= parseIsoDate(c.startDate).getTime() &&
-          chosen <= parseIsoDate(c.endDate).getTime()
-        );
-      });
+    return this.byTab[this.tab()]()
+      .filter((campaign) => this.matchesAge(campaign, ageRange))
+      .filter((campaign) => this.matchesDate(campaign, date));
   });
 
-  setTab(tab: Tab): void {
+  setTab(tab: CampaignState): void {
     this.tab.set(tab);
   }
 
@@ -71,7 +74,24 @@ export class CampaignList {
     this.dateFilter.set('');
   }
 
-  isActive(id: string): boolean {
-    return this.campaignService.active().some((campaign) => campaign.id === id);
+  private selectedAgeRange(): AgeFilter {
+    return (
+      CHILD_AGE_FILTERS.find((filter) => filter.value === this.ageFilter()) ?? CHILD_AGE_FILTERS[0]
+    );
+  }
+
+  private matchesAge(campaign: Campaign, range: AgeFilter): boolean {
+    return range.min <= campaign.maximumAgeInMonths && campaign.minimumAgeInMonths < range.max;
+  }
+
+  private matchesDate(campaign: Campaign, date: string): boolean {
+    if (!date) {
+      return true;
+    }
+    const chosen = parseIsoDate(date).getTime();
+    return (
+      chosen >= parseIsoDate(campaign.startDate).getTime() &&
+      chosen <= parseIsoDate(campaign.endDate).getTime()
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { CampaignCard } from 'src/app/shared/components/campaign-card/campaign-card';
+import { CampaignCard, CampaignState } from 'src/app/shared/components/campaign-card/campaign-card';
 import { Campaign } from 'src/app/shared/models/campaign.model';
 
 const campaign: Campaign = {
@@ -21,32 +21,33 @@ describe('CampaignCard', () => {
     }).compileComponents();
   });
 
-  function render(input: Campaign, options?: { active?: boolean; ended?: boolean }) {
+  function render(state?: CampaignState) {
     const fixture = TestBed.createComponent(CampaignCard);
-    fixture.componentRef.setInput('campaign', input);
-    if (options?.active !== undefined) {
-      fixture.componentRef.setInput('active', options.active);
-    }
-    if (options?.ended !== undefined) {
-      fixture.componentRef.setInput('ended', options.ended);
+    fixture.componentRef.setInput('campaign', campaign);
+    if (state) {
+      fixture.componentRef.setInput('state', state);
     }
     fixture.detectChanges();
-    return fixture;
+    return fixture.nativeElement as HTMLElement;
   }
 
   it('should create and show the title and audience', () => {
-    const el = render(campaign).nativeElement as HTMLElement;
+    const el = render();
     expect(el.textContent).toContain('Campanha de Gripe 2026');
     expect(el.textContent).toContain('De 6 meses a 5 anos');
   });
 
   it('should show the "Ativa" tag when active', () => {
-    const el = render(campaign, { active: true }).nativeElement as HTMLElement;
-    expect(el.textContent).toContain('Ativa');
+    expect(render('active').textContent).toContain('Ativa');
   });
 
-  it('should not show the "Ativa" tag by default', () => {
-    const el = render(campaign).nativeElement as HTMLElement;
+  it('should show the "Em breve" tag when upcoming', () => {
+    expect(render('upcoming').textContent).toContain('Em breve');
+  });
+
+  it('should not show any tag when ended', () => {
+    const el = render('ended');
     expect(el.textContent).not.toContain('Ativa');
+    expect(el.textContent).not.toContain('Em breve');
   });
 });

@@ -7,11 +7,11 @@
 >
   <div
     class="vk-row group flex w-full min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-xl p-4 shadow-soft transition hover:shadow-card"
-    [class]="ended() ? 'bg-brand-brown/5' : 'bg-linear-to-r from-brand-yellow to-brand-orange'"
+    [class]="isEnded() ? 'bg-brand-brown/5' : 'bg-linear-to-r from-brand-yellow to-brand-orange'"
   >
     <span
       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
-      [class]="ended() ? 'bg-brand-brown/10 text-brand-brown/50' : 'bg-white/30 text-brand-brown'"
+      [class]="isEnded() ? 'bg-brand-brown/10 text-brand-brown/50' : 'bg-white/30 text-brand-brown'"
     >
       <ion-icon name="megaphone" style="font-size: 22px" />
     </span>
@@ -21,21 +21,21 @@
         <strong class="min-h-10 min-w-0 flex-1 line-clamp-2 leading-5 text-brand-brown">
           {{ campaign().title }}
         </strong>
-        @if (active()) {
+        @if (state() !== 'ended') {
           <span
             class="shrink-0 rounded-full bg-white/40 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-brand-brown uppercase"
           >
-            Ativa
+            {{ state() === 'active' ? 'Ativa' : 'Em breve' }}
           </span>
         }
       </div>
       <p
         class="truncate text-sm font-semibold"
-        [class]="ended() ? 'text-muted' : 'text-brand-brown/80'"
+        [class]="isEnded() ? 'text-muted' : 'text-brand-brown/80'"
       >
         {{ audience() }}
       </p>
-      <p class="text-xs" [class]="ended() ? 'text-muted' : 'text-brand-brown/70'">
+      <p class="text-xs" [class]="isEnded() ? 'text-muted' : 'text-brand-brown/70'">
         {{ campaign().startDate | dateFormat }} – {{ campaign().endDate | dateFormat }}
       </p>
     </div>
@@ -44,7 +44,7 @@
       name="chevron-right"
       style="font-size: 20px"
       class="shrink-0 transition group-hover:translate-x-0.5"
-      [class]="ended() ? 'text-muted' : 'text-brand-brown'"
+      [class]="isEnded() ? 'text-muted' : 'text-brand-brown'"
     />
   </div>
 </ion-item>

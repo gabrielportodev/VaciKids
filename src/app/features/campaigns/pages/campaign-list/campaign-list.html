@@ -15,6 +15,14 @@
     </button>
     <button
       type="button"
+      (click)="setTab('upcoming')"
+      class="h-10 flex-1 rounded-md text-sm font-bold transition"
+      [class]="tab() === 'upcoming' ? 'bg-card text-brand-brown shadow-soft' : 'text-muted'"
+    >
+      Em breve ({{ counts().upcoming }})
+    </button>
+    <button
+      type="button"
       (click)="setTab('ended')"
       class="h-10 flex-1 rounded-md text-sm font-bold transition"
       [class]="tab() === 'ended' ? 'bg-card text-brand-brown shadow-soft' : 'text-muted'"
@@ -58,12 +66,7 @@
   } @else if (shown().length > 0) {
     <div class="grid w-full grid-cols-1 gap-3 lg:grid-cols-2">
       @for (campaign of shown(); track campaign.id) {
-        <app-campaign-card
-          class="block w-full min-w-0"
-          [campaign]="campaign"
-          [active]="isActive(campaign.id)"
-          [ended]="tab() === 'ended'"
-        />
+        <app-campaign-card class="block w-full min-w-0" [campaign]="campaign" [state]="tab()" />
       }
     </div>
   } @else if (hasFilters()) {
@@ -83,7 +86,13 @@
   } @else {
     <app-empty-state
       icon="megaphone"
-      [title]="tab() === 'ended' ? 'Nenhuma campanha encerrada' : 'Nenhuma campanha ativa'"
+      [title]="
+        tab() === 'ended'
+          ? 'Nenhuma campanha encerrada'
+          : tab() === 'upcoming'
+            ? 'Nenhuma campanha agendada'
+            : 'Nenhuma campanha ativa'
+      "
       description="Novas campanhas aparecerão aqui quando disponíveis."
     />
   }

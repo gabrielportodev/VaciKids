@@ -5,6 +5,8 @@ import { Campaign } from 'src/app/shared/models/campaign.model';
 import { DateFormatPipe } from 'src/app/shared/pipes/date-format.pipe';
 import { campaignAudienceLabel } from 'src/app/core/utils';
 
+export type CampaignState = 'active' | 'upcoming' | 'ended';
+
 @Component({
   selector: 'app-campaign-card',
   imports: [RouterLink, IonItem, DateFormatPipe, IonIcon],
@@ -13,8 +15,9 @@ import { campaignAudienceLabel } from 'src/app/core/utils';
 })
 export class CampaignCard {
   readonly campaign = input.required<Campaign>();
-  readonly active = input<boolean>(false);
-  readonly ended = input<boolean>(false);
+  readonly state = input<CampaignState>('active');
+
+  readonly isEnded = computed(() => this.state() === 'ended');
 
   readonly audience = computed(() =>
     campaignAudienceLabel(this.campaign().minimumAgeInMonths, this.campaign().maximumAgeInMonths),
